@@ -1,0 +1,31 @@
+car:
+    # toyota ##################################################################
+    - manufacturer: 'Toyota'
+      name: 'Supra'
+      color: 'green'
+      electric: False
+
+      owners:
+        - Alice
+        - Bob
+
+    - manufacturer: 'Toyota'
+      name: 'Corolla'
+      color: 'black'
+      electric: False
+
+    - manufacturer: 'Toyota'
+      name: 'BZ4X'
+      color: 'green'
+      electric: True
+
+    # mitsubishi ##############################################################
+    - manufacturer: 'Mitsubishi'
+      name: 'Eclipse'
+      color: 'green'
+      electric: False
+
+    - manufacturer: 'Mitsubishi'
+      name: 'i-MIEV'
+      color: 'white'
+      electric: True

@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import logging
+import os
+
+from lona import LonaApp
+
+from pillowfort.context import Context
+
+app = LonaApp(__file__)
+
+app.settings.PILLOWFORT_SETTINGS = 'settings.py'
+app.settings.DATA_ROOT = 'data'
+app.settings.END_POINT_ROOT = 'endpoints'
+
+context = Context(lona_app=app)
+
+app.run()

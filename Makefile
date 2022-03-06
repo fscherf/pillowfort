@@ -18,6 +18,11 @@ $(PYTHON_DEV_ENV)/.created: REQUIREMENTS.dev.txt
 
 dev-env: $(PYTHON_DEV_ENV)/.created
 
+server: dev-env
+	. $(PYTHON_DEV_ENV)/bin/activate && \
+	cd test_project && \
+	pillowfort $(args)
+
 # packaging environment #######################################################
 $(PYTHON_PACKAGING_ENV)/.created: REQUIREMENTS.packaging.txt
 	rm -rf $(PYTHON_PACKAGING_ENV) && \

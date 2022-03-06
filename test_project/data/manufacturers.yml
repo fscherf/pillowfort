@@ -1,0 +1,9 @@
+manufacturer:
+    - name: 'Toyota'
+      country: 'Japan'
+
+    - name: 'Mitsubishi'
+      country: 'Japan'
+
+    - name: 'Ford'
+      country: 'USA'
