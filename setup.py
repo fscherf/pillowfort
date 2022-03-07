@@ -16,7 +16,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'lona',
-        'lona-bootstrap-5',
+        'lona-bootstrap-5==0.3',
         'pyyaml',
         'flamingo==1.7.1',
     ],
