@@ -82,13 +82,12 @@ class DataEditView(LonaView):
                 name=key,
             )
 
-        elif type(value) in (list, dict):
-            value = yaml.dump(value)
+        value = yaml.dump(value)
 
-            return TextArea(
-                value=value,
-                name=key,
-            )
+        return TextArea(
+            value=value,
+            name=key,
+        )
 
     def handle_request(self, request):
         self.model_name = request.match_info['model_name']
