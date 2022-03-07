@@ -1,5 +1,6 @@
 from pprint import pformat
 import traceback
+import logging
 
 from lona import LonaView
 
@@ -14,6 +15,8 @@ from lona.html import (
     Td,
     P,
 )
+
+formatter_logger = logging.getLogger('pillowfort.ResponseFormatter')
 
 
 class Pre(BasePre):
@@ -39,6 +42,21 @@ class ActivitiesShowView(LonaView):
                 P('Unknown id'),
             )
 
+        # format response body
+        try:
+            formatter_class = activity['endpoint'].RESPONSE_FORMATTER
+            formatter = formatter_class()
+            response_body = formatter.format_response(activity['response'])
+
+        except Exception:
+            formatter_logger.exception(
+                'Exception raised while running %s.format_response',
+                formatter,
+            )
+
+            response_body = activity['response']
+
+        # render HTML
         html = HTML(
             H1('Activity'),
             Table(
@@ -70,9 +88,7 @@ class ActivitiesShowView(LonaView):
             ),
 
             H2('Response'),
-            Pre(
-                pformat(activity['response'])
-            ),
+            Pre(response_body),
         )
 
         if activity['error']:

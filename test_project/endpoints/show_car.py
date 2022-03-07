@@ -1,11 +1,12 @@
 import json
 
 from flamingo.core.errors import ObjectDoesNotExist
-from pillowfort import Endpoint, Variable
+from pillowfort import Endpoint, Variable, JsonResponseFormatter
 
 
 class ShowCars(Endpoint):
     URL = '/api/cars/'
+    RESPONSE_FORMATTER = JsonResponseFormatter
 
     VARIABLES = [
         Variable('Delay API Calls', False),

@@ -6,12 +6,15 @@ from lona import LonaView
 
 from lona_bootstrap_5 import show_alert
 
+from pillowfort.response_formatter import ResponseFormatter
+
 
 class Endpoint(LonaView):
     URL = ''
     ROUTE_NAME = ''
     INTERACTIVE = False
     VARIABLES = []
+    RESPONSE_FORMATTER = ResponseFormatter
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -30,6 +33,7 @@ class Endpoint(LonaView):
 
         self.server.state['activities'].append({
             'id': self._generate_random_id(),
+            'endpoint': self,
             'timestamp': str(datetime.datetime.now()),
             'url': str(request.url.path),
             'method': request.method,
