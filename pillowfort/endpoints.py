@@ -6,4 +6,6 @@ class BlackHoleEndpoint(Endpoint):
     NAME = 'Black Hole'
 
     def handle_request(self, request):
-        return '[No Response]'
+        return {
+            'text': '[No Response]',
+        }

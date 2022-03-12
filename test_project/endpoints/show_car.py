@@ -20,22 +20,29 @@ class ShowCars(Endpoint):
         for car in cars:
             data.append(car.data)
 
-        return json.dumps(data)
+        return {
+            'text': json.dumps(data)
+        }
 
 
 class ShowCar(Endpoint):
     URL = '/api/cars/<id:[0-9]+>'
+    RESPONSE_FORMATTER = JsonResponseFormatter
 
     def handle_request(self, request):
         cars = self.get_model('car')
 
         try:
-            car = cars.get(id=int(car_id))
+            car = cars.get(id=int(request.match_info['id']))
 
-            return json.dumps(car.data)
+            return {
+                'text': json.dumps(car.data)
+            }
 
         except ObjectDoesNotExist:
-            return '{}'
+            return {
+                'text': '{}',
+            }
 
 
 class BrokenEndpoint(Endpoint):

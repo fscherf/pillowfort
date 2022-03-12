@@ -51,7 +51,10 @@ class Endpoint(LonaView):
                 response = handle_request(request)
 
             except Exception as e:
-                response = '[No Response]'
+                response = {
+                    'text': '[No Response]'
+                }
+
                 error = e
 
             self._add_activity(
@@ -63,9 +66,7 @@ class Endpoint(LonaView):
             if error:
                 raise error
 
-            return {
-                'text': response,
-            }
+            return response
 
         return run_handle_request
 

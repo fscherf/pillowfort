@@ -46,7 +46,10 @@ class ActivitiesShowView(LonaView):
         try:
             formatter_class = activity['endpoint'].RESPONSE_FORMATTER
             formatter = formatter_class()
-            response_body = formatter.format_response(activity['response'])
+
+            response_body = formatter.format_response(
+                activity['response']['text'],
+            )
 
         except Exception:
             formatter_logger.exception(
@@ -54,7 +57,7 @@ class ActivitiesShowView(LonaView):
                 formatter,
             )
 
-            response_body = activity['response']
+            response_body = activity['response']['text']
 
         # render HTML
         html = HTML(
