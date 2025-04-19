@@ -1,0 +1,61 @@
+:root {
+  --default-gutter: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: monospace;
+  margin: 0;
+  padding: var(--default-gutter);
+}
+
+a,
+a:hover,
+a:active,
+a:visited {
+  color: blue;
+  text-decoration: none;
+}
+
+
+/* header */
+header {
+  display: flex;
+  margin-bottom: var(--default-gutter);
+}
+
+header h1 {
+  margin: 0;
+  padding: 0;
+}
+
+header h1 a {
+  color: black !important;
+}
+
+header #menu {
+  flex-grow: 1;
+  text-align: right;
+}
+
+
+/* grid */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col {
+  padding-right: var(--default-gutter);
+}
+
+
+/* main */
+main canvas {
+  border: 1px solid grey;
+  width: 800px;
+  height: 600px;
+}

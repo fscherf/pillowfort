@@ -1,0 +1,17 @@
+{% extends "pillowfort/base.html" %}
+{% load pillowfort %}
+
+{% block content %}
+  <div class="row">
+    <div class="col">
+      <canvas id="main" tabindex="0"></canvas>
+    </div>
+    <div class="col">
+      <div id="hello-world"></div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script type="module" src="{% frontend_static '/dist/index.js' %}"></script>
+{% endblock %}

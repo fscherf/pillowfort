@@ -1,0 +1,14 @@
+# aiohttp
+aiohttp<=4
+aiohttp-wsgi~=0.10
+
+# Django
+Django~=4.2
+psycopg2~=2.9
+ipython
+django-extensions~=4.1
+
+# misc
+watchfiles~=1.0
+pillow~=11.2
+tox~=4.25
