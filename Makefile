@@ -1,5 +1,5 @@
 .PHONY: \
-	all base build test \
+	all base build test lint \
 	backend-build backend-bash backend-shell backend-test \
 	frontend-build frontend-bash frontend-lint \
 	start stop \
@@ -23,6 +23,8 @@ build: base
 	docker compose build ${args}
 
 test: base backend-test frontend-test
+
+lint: base frontend-lint
 
 
 # backend
