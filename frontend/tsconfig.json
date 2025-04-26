@@ -8,6 +8,11 @@
     "allowJs": true,
     "moduleResolution": "node",
     "lib": ["es2022", "dom"],
-    "sourceMap": true
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   }
 }

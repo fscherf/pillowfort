@@ -22,7 +22,7 @@ base: data/.gitkeep .env
 build: base
 	docker compose build ${args}
 
-test: base backend-test
+test: base backend-test frontend-test
 
 
 # backend
@@ -45,6 +45,9 @@ frontend-build: base
 
 frontend-bash: base
 	docker compose run frontend /bin/bash
+
+frontend-test: base
+	docker compose run frontend npm run test
 
 frontend-lint: base
 	docker compose run frontend npm run lint
