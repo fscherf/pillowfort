@@ -1,7 +1,7 @@
 .PHONY: \
 	all base build test lint \
 	backend-build backend-bash backend-shell backend-test \
-	frontend-build frontend-bash frontend-lint \
+	frontend-build frontend-watch frontend-bash frontend-lint \
 	start stop \
 	data-backup data-restore data-bootstrap
 
@@ -44,6 +44,10 @@ backend-test: base
 # frontend
 frontend-build: base
 	docker compose build frontend
+
+frontend-watch: base
+	docker compose down frontend && \
+	docker compose run frontend npm run watch
 
 frontend-bash: base
 	docker compose run frontend /bin/bash
