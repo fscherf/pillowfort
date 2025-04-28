@@ -6,4 +6,7 @@ module.exports = {
   },
   moduleFileExtensions: ["ts", "js", "json"],
   roots: ["<rootDir>/tests"],
+  collectCoverage: true,
+  coverageReporters: ["text", "html"],
+  coverageDirectory: "./coverage"
 };
