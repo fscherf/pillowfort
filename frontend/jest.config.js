@@ -5,8 +5,8 @@ module.exports = {
     "^@/(.*)$": "<rootDir>/src/$1"
   },
   moduleFileExtensions: ["ts", "js", "json"],
-  roots: ["<rootDir>/tests"],
   collectCoverage: true,
+  collectCoverageFrom: ["./src/**/*.{ts,js}"],
   coverageReporters: ["text", "html"],
   coverageDirectory: "./coverage"
 };
