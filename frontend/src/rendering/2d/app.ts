@@ -1,4 +1,4 @@
-import { Dimensions } from "./types.js";
+import { Viewport } from "./types.js";
 import { Layer } from "./layer.js";
 
 export class App {
@@ -206,7 +206,7 @@ export class App {
   }
 
   // scaling
-  public getDimensions(): Dimensions {
+  public getViewport(): Viewport {
     const clientRect = this.canvasElement.getClientRects()[0];
 
     return {
