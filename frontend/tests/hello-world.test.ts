@@ -1,4 +1,4 @@
-import { helloWorld } from "@/utils";
+import { helloWorld } from "@/hello-world";
 
 test("Hello World", () => {
   document.body.innerHTML = `

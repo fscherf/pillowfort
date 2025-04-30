@@ -4,14 +4,11 @@
 {% block content %}
   <div class="row">
     <div class="col">
-      <canvas id="main" tabindex="0"></canvas>
-    </div>
-    <div class="col">
-      <div id="hello-world"></div>
+      <div id="main"></div>
     </div>
   </div>
 {% endblock %}
 
 {% block script %}
-  <script type="module" src="{% frontend_static '/dist/index.js' %}"></script>
+  <script type="module" src="{% frontend_static '/dist/basic-2d-rendering.js' %}"></script>
 {% endblock %}
