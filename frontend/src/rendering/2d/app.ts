@@ -1,11 +1,16 @@
+import {
+  BrowserInterface,
+  TestCanvasRenderingContext2D,
+} from "../../browser-interface.js";
 import { Viewport } from "./types.js";
 import { Layer } from "./layer.js";
 
 export class App {
   public rootElement: HTMLElement;
+  public browserInterface: BrowserInterface;
   public appElement: HTMLDivElement;
   public canvasElement: HTMLCanvasElement;
-  public ctx: CanvasRenderingContext2D;
+  public ctx: CanvasRenderingContext2D | TestCanvasRenderingContext2D;
   public layers: Array<Layer>;
   public running: boolean;
   public fps: number;
@@ -31,8 +36,19 @@ export class App {
   private lastTpsUpdateTimestamp: number;
   private lastFpsUpdateTimestamp: number;
 
-  constructor({ rootElement }: { rootElement: HTMLElement }) {
+  constructor({
+    rootElement,
+    browserInterface,
+  }: {
+    rootElement: HTMLElement;
+    browserInterface?: BrowserInterface;
+  }) {
     this.rootElement = rootElement;
+    this.browserInterface = browserInterface;
+
+    if (!this.browserInterface) {
+      this.browserInterface = new BrowserInterface();
+    }
 
     // bootstrap HTML structure
     rootElement.innerHTML = `
@@ -49,9 +65,7 @@ export class App {
       "canvas",
     ) as HTMLCanvasElement;
 
-    // setup 2d context
-    this.ctx = this.canvasElement.getContext("2d");
-    this.ctx.imageSmoothingEnabled = false;
+    this.ctx = this.browserInterface.get2dContext(this.canvasElement);
 
     // setup layers
     this.layers = [];
@@ -207,18 +221,7 @@ export class App {
 
   // scaling
   public getViewport(): Viewport {
-    const clientRect = this.canvasElement.getClientRects()[0];
-
-    return {
-      x: clientRect.x,
-      y: clientRect.y,
-      width: clientRect.width,
-      height: clientRect.height,
-      top: clientRect.top,
-      right: clientRect.right,
-      bottom: clientRect.bottom,
-      left: clientRect.left,
-    };
+    return this.browserInterface.getViewport(this.canvasElement);
   }
 
   public scale(): void {
