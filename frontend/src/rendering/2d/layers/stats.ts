@@ -1,4 +1,3 @@
-import { Viewport } from "../types.js";
 import { Layer } from "../layer.js";
 
 export class StatsLayer extends Layer {
@@ -19,8 +18,6 @@ export class StatsLayer extends Layer {
   public cornerLength: number = 32;
 
   render(timeDelta: number): void {
-    const appViewport: Viewport = this.app.getViewport();
-
     // stats
     const lines: Array<string> = [];
 
@@ -38,7 +35,7 @@ export class StatsLayer extends Layer {
       this.app.ctx.textBaseline = "top";
       this.app.ctx.textAlign = "right";
 
-      const x = appViewport.width - this.defaultGutter;
+      const x = this.app.viewport.width - this.defaultGutter;
       let y = this.defaultGutter;
 
       for (const line of lines) {
@@ -59,47 +56,47 @@ export class StatsLayer extends Layer {
 
       // top right
       this.app.ctx.fillRect(
-        appViewport.width - this.cornerLength,
+        this.app.viewport.width - this.cornerLength,
         0,
-        appViewport.width,
+        this.app.viewport.width,
         this.cornerWidth,
       );
 
       this.app.ctx.fillRect(
-        appViewport.width - this.cornerWidth,
+        this.app.viewport.width - this.cornerWidth,
         0,
-        appViewport.width,
+        this.app.viewport.width,
         this.cornerLength,
       );
 
       // bottom right
       this.app.ctx.fillRect(
-        appViewport.width - this.cornerLength,
-        appViewport.height - this.cornerWidth,
-        appViewport.width,
-        appViewport.height,
+        this.app.viewport.width - this.cornerLength,
+        this.app.viewport.height - this.cornerWidth,
+        this.app.viewport.width,
+        this.app.viewport.height,
       );
 
       this.app.ctx.fillRect(
-        appViewport.width - this.cornerWidth,
-        appViewport.height - this.cornerLength,
-        appViewport.width,
-        appViewport.height,
+        this.app.viewport.width - this.cornerWidth,
+        this.app.viewport.height - this.cornerLength,
+        this.app.viewport.width,
+        this.app.viewport.height,
       );
 
       // bottom left
       this.app.ctx.fillRect(
         0,
-        appViewport.height - this.cornerWidth,
+        this.app.viewport.height - this.cornerWidth,
         this.cornerLength,
-        appViewport.height,
+        this.app.viewport.height,
       );
 
       this.app.ctx.fillRect(
         0,
-        appViewport.height - this.cornerLength,
+        this.app.viewport.height - this.cornerLength,
         this.cornerWidth,
-        appViewport.height,
+        this.app.viewport.height,
       );
     }
   }

@@ -8,6 +8,7 @@ import { Layer } from "./layer.js";
 export class App {
   public rootElement: HTMLElement;
   public browserInterface: BrowserInterface;
+  public viewport: Viewport;
   public appElement: HTMLDivElement;
   public canvasElement: HTMLCanvasElement;
   public ctx: CanvasRenderingContext2D | TestCanvasRenderingContext2D;
@@ -220,10 +221,6 @@ export class App {
   }
 
   // scaling
-  public getViewport(): Viewport {
-    return this.browserInterface.getViewport(this.canvasElement);
-  }
-
   public scale(): void {
     this.appElement.style.width = "100%";
     this.appElement.style.height = "100%";
@@ -242,5 +239,7 @@ export class App {
     this.canvasElement.style.height = `${height}px`;
     this.canvasElement.width = width;
     this.canvasElement.height = height;
+
+    this.viewport = this.browserInterface.getViewport(this.canvasElement);
   }
 }
