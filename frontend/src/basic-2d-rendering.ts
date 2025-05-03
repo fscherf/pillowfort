@@ -1,5 +1,7 @@
 import { SolidColorBackgroundLayer } from "@/rendering/2d/layers/solid-color-background";
+import { CallbackLayer } from "@/rendering/2d/layers/callback";
 import { StatsLayer } from "@/rendering/2d/layers/stats";
+import { Layer } from "@/rendering/2d/layer";
 import { App } from "@/rendering/2d/app";
 
 declare const window: {
@@ -33,6 +35,29 @@ window.addEventListener("load", () => {
   statsLayer.showCorners = true;
 
   app.layerAdd(statsLayer);
+
+  // mini map
+  const miniMapLayer: CallbackLayer = new CallbackLayer();
+
+  miniMapLayer.name = "mini-map";
+  miniMapLayer.zIndex = 100;
+  miniMapLayer.width = "100px";
+  miniMapLayer.height = "75px";
+  miniMapLayer.right = "20px";
+  miniMapLayer.bottom = "20px";
+
+  miniMapLayer.callback = (layer: Layer, timeDelta: number) => {
+    layer.app.ctx.fillStyle = "green";
+
+    layer.app.ctx.fillRect(
+      layer.viewport.x,
+      layer.viewport.y,
+      layer.viewport.width,
+      layer.viewport.height,
+    );
+  };
+
+  app.layerAdd(miniMapLayer);
 
   // start
   app.start();

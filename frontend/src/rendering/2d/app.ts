@@ -229,17 +229,27 @@ export class App {
     // element has time to collapse before we measure its size.
     // Without this step, the canvas element would infinitely grow when
     // trying to scale.
-    this.resize(100, 100);
+    this.resize(100, 100, false);
 
     this.resize(this.appElement.clientWidth, this.appElement.clientHeight);
   }
 
-  public resize(width: number, height: number): void {
+  public resize(
+    width: number,
+    height: number,
+    recalculateViewports: boolean = true,
+  ): void {
     this.canvasElement.style.width = `${width}px`;
     this.canvasElement.style.height = `${height}px`;
     this.canvasElement.width = width;
     this.canvasElement.height = height;
 
-    this.viewport = this.browserInterface.getViewport(this.canvasElement);
+    if (recalculateViewports) {
+      this.viewport = this.browserInterface.getViewport(this.canvasElement);
+
+      for (const layer of this.layers) {
+        layer.recalculateViewport();
+      }
+    }
   }
 }
