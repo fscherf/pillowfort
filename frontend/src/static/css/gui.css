@@ -1,0 +1,439 @@
+/* variables --------------------------------------------------------------- */
+:root {
+  --gui-font-family: "ProggyClean";
+  --gui-font-size: 16px;
+  --gui-shadow: 10px 10px 34px -13px rgba(0, 0, 0, 0.3);
+
+  /* windows */
+  --gui-window-border-radius: 8px;
+  --gui-window-border-width: 1px;
+  --gui-window-title-bar-padding: 8px;
+  --gui-window-content-padding: 8px;
+
+  /* scrollbar */
+  --gui-scrollbar-width: 8px;
+
+  /* theme: dark */
+  --gui-dark-Text: rgba(256, 256, 256, 1);
+  --gui-dark-TextDisabled: rgba(128, 128, 128, 1);
+  --gui-dark-WindowBg: rgba(15.36, 15.36, 15.36, 0.94);
+  --gui-dark-ChildBg: rgba(0, 0, 0, 0);
+  --gui-dark-PopupBg: rgba(20.48, 20.48, 20.48, 0.94);
+  --gui-dark-Border: rgba(110.08, 110.08, 128, 0.5);
+  --gui-dark-BorderShadow: rgba(0, 0, 0, 0);
+  --gui-dark-FrameBg: rgba(40.96, 74.24, 122.88, 0.54);
+  --gui-dark-FrameBgHovered: rgba(66.56, 151.04, 250.88, 0.4);
+  --gui-dark-FrameBgActive: rgba(66.56, 151.04, 250.88, 0.67);
+  --gui-dark-TitleBg: rgba(10.24, 10.24, 10.24, 1);
+  --gui-dark-TitleBgActive: rgba(40.96, 74.24, 122.88, 1);
+  --gui-dark-TitleBgCollapsed: rgba(0, 0, 0, 0.51);
+  --gui-dark-MenuBarBg: rgba(35.84, 35.84, 35.84, 1);
+  --gui-dark-ScrollbarBg: rgba(5.12, 5.12, 5.12, 0.53);
+  --gui-dark-ScrollbarGrab: rgba(79.36, 79.36, 79.36, 1);
+  --gui-dark-ScrollbarGrabHovered: rgba(104.96, 104.96, 104.96, 1);
+  --gui-dark-ScrollbarGrabActive: rgba(130.56, 130.56, 130.56, 1);
+  --gui-dark-CheckMark: rgba(66.56, 151.04, 250.88, 1);
+  --gui-dark-SliderGrab: rgba(61.44, 133.12, 225.28, 1);
+  --gui-dark-SliderGrabActive: rgba(66.56, 151.04, 250.88, 1);
+  --gui-dark-Button: rgba(66.56, 151.04, 250.88, 0.4);
+  --gui-dark-ButtonHovered: rgba(66.56, 151.04, 250.88, 1);
+  --gui-dark-ButtonActive: rgba(15.36, 135.68, 250.88, 1);
+  --gui-dark-Header: rgba(66.56, 151.04, 250.88, 0.31);
+  --gui-dark-HeaderHovered: rgba(66.56, 151.04, 250.88, 0.8);
+  --gui-dark-HeaderActive: rgba(66.56, 151.04, 250.88, 1);
+  --gui-dark-SeparatorHovered: rgba(25.6, 102.4, 192, 0.78);
+  --gui-dark-SeparatorActive: rgba(25.6, 102.4, 192, 1);
+  --gui-dark-ResizeGrip: rgba(66.56, 151.04, 250.88, 0.2);
+  --gui-dark-ResizeGripHovered: rgba(66.56, 151.04, 250.88, 0.67);
+  --gui-dark-ResizeGripActive: rgba(66.56, 151.04, 250.88, 0.95);
+  --gui-dark-PlotLines: rgba(156.16, 156.16, 156.16, 1);
+  --gui-dark-PlotLinesHovered: rgba(256, 110.08, 89.6, 1);
+  --gui-dark-PlotHistogram: rgba(230.4, 179.2, 0, 1);
+  --gui-dark-PlotHistogramHovered: rgba(256, 153.6, 0, 1);
+  --gui-dark-TableHeaderBg: rgba(48.64, 48.64, 51.2, 1);
+  --gui-dark-TableBorderStrong: rgba(79.36, 79.36, 89.6, 1);
+  --gui-dark-TableBorderLight: rgba(58.88, 58.88, 64, 1);
+  --gui-dark-TableRowBg: rgba(0, 0, 0, 0);
+  --gui-dark-TableRowBgAlt: rgba(256, 256, 256, 0.06);
+  --gui-dark-TextSelectedBg: rgba(66.56, 151.04, 250.88, 0.35);
+  --gui-dark-DragDropTarget: rgba(256, 256, 0, 0.9);
+  --gui-dark-NavHighlight: rgba(66.56, 151.04, 250.88, 1);
+  --gui-dark-NavWindowingHighlight: rgba(256, 256, 256, 0.7);
+  --gui-dark-NavWindowingDimBg: rgba(204.8, 204.8, 204.8, 0.2);
+  --gui-dark-ModalWindowDimBg: rgba(204.8, 204.8, 204.8, 0.35);
+
+  /* theme: classic */
+  --gui-classic-Text: rgba(230.4, 230.4, 230.4, 1);
+  --gui-classic-TextDisabled: rgba(153.6, 153.6, 153.6, 1);
+  --gui-classic-WindowBg: rgba(0, 0, 0, 0.85);
+  --gui-classic-ChildBg: rgba(0, 0, 0, 0);
+  --gui-classic-PopupBg: rgba(28.16, 28.16, 35.84, 0.92);
+  --gui-classic-Border: rgba(128, 128, 128, 0.5);
+  --gui-classic-BorderShadow: rgba(0, 0, 0, 0);
+  --gui-classic-FrameBg: rgba(110.08, 110.08, 110.08, 0.39);
+  --gui-classic-FrameBgHovered: rgba(120.32, 120.32, 176.64, 0.4);
+  --gui-classic-FrameBgActive: rgba(107.52, 104.96, 163.84, 0.69);
+  --gui-classic-TitleBg: rgba(69.12, 69.12, 138.24, 0.83);
+  --gui-classic-TitleBgActive: rgba(81.92, 81.92, 161.28, 0.87);
+  --gui-classic-TitleBgCollapsed: rgba(102.4, 102.4, 204.8, 0.2);
+  --gui-classic-MenuBarBg: rgba(102.4, 102.4, 140.8, 0.8);
+  --gui-classic-ScrollbarBg: rgba(51.2, 64, 76.8, 0.6);
+  --gui-classic-ScrollbarGrab: rgba(102.4, 102.4, 204.8, 0.3);
+  --gui-classic-ScrollbarGrabHovered: rgba(102.4, 102.4, 204.8, 0.4);
+  --gui-classic-ScrollbarGrabActive: rgba(104.96, 99.84, 204.8, 0.6);
+  --gui-classic-CheckMark: rgba(230.4, 230.4, 230.4, 0.5);
+  --gui-classic-SliderGrab: rgba(256, 256, 256, 0.3);
+  --gui-classic-SliderGrabActive: rgba(104.96, 99.84, 204.8, 0.6);
+  --gui-classic-Button: rgba(89.6, 102.4, 156.16, 0.62);
+  --gui-classic-ButtonHovered: rgba(102.4, 122.88, 181.76, 0.79);
+  --gui-classic-ButtonActive: rgba(117.76, 138.24, 204.8, 1);
+  --gui-classic-Header: rgba(102.4, 102.4, 230.4, 0.45);
+  --gui-classic-HeaderHovered: rgba(115.2, 115.2, 230.4, 0.8);
+  --gui-classic-HeaderActive: rgba(135.68, 135.68, 222.72, 0.8);
+  --gui-classic-Separator: rgba(128, 128, 128, 0.6);
+  --gui-classic-SeparatorHovered: rgba(153.6, 153.6, 179.2, 1);
+  --gui-classic-SeparatorActive: rgba(179.2, 179.2, 230.4, 1);
+  --gui-classic-ResizeGrip: rgba(256, 256, 256, 0.1);
+  --gui-classic-ResizeGripHovered: rgba(199.68, 209.92, 256, 0.6);
+  --gui-classic-ResizeGripActive: rgba(199.68, 209.92, 256, 0.9);
+  --gui-classic-PlotLines: rgba(256, 256, 256, 1);
+  --gui-classic-PlotLinesHovered: rgba(230.4, 179.2, 0, 1);
+  --gui-classic-PlotHistogram: rgba(230.4, 179.2, 0, 1);
+  --gui-classic-PlotHistogramHovered: rgba(256, 153.6, 0, 1);
+  --gui-classic-TableHeaderBg: rgba(69.12, 69.12, 97.28, 1);
+  --gui-classic-TableBorderStrong: rgba(79.36, 79.36, 115.2, 1);
+  --gui-classic-TableBorderLight: rgba(66.56, 66.56, 71.68, 1);
+  --gui-classic-TableRowBg: rgba(0, 0, 0, 0);
+  --gui-classic-TableRowBgAlt: rgba(256, 256, 256, 0.07);
+  --gui-classic-TextSelectedBg: rgba(0, 0, 256, 0.35);
+  --gui-classic-DragDropTarget: rgba(256, 256, 0, 0.9);
+  --gui-classic-NavWindowingHighlight: rgba(256, 256, 256, 0.7);
+  --gui-classic-NavWindowingDimBg: rgba(204.8, 204.8, 204.8, 0.2);
+  --gui-classic-ModalWindowDimBg: rgba(51.2, 51.2, 51.2, 0.35);
+
+  /* theme: light */
+  --gui-light-Text: rgba(0, 0, 0, 1);
+  --gui-light-TextDisabled: rgba(153.6, 153.6, 153.6, 1);
+  --gui-light-WindowBg: rgba(240.64, 240.64, 240.64, 1);
+  --gui-light-ChildBg: rgba(0, 0, 0, 0);
+  --gui-light-PopupBg: rgba(256, 256, 256, 0.98);
+  --gui-light-Border: rgba(0, 0, 0, 0.3);
+  --gui-light-BorderShadow: rgba(0, 0, 0, 0);
+  --gui-light-FrameBg: rgba(256, 256, 256, 1);
+  --gui-light-FrameBgHovered: rgba(66.56, 151.04, 250.88, 0.4);
+  --gui-light-FrameBgActive: rgba(66.56, 151.04, 250.88, 0.67);
+  --gui-light-TitleBg: rgba(245.76, 245.76, 245.76, 1);
+  --gui-light-TitleBgActive: rgba(209.92, 209.92, 209.92, 1);
+  --gui-light-TitleBgCollapsed: rgba(256, 256, 256, 0.51);
+  --gui-light-MenuBarBg: rgba(220.16, 220.16, 220.16, 1);
+  --gui-light-ScrollbarBg: rgba(250.88, 250.88, 250.88, 0.53);
+  --gui-light-ScrollbarGrab: rgba(176.64, 176.64, 176.64, 0.8);
+  --gui-light-ScrollbarGrabHovered: rgba(125.44, 125.44, 125.44, 0.8);
+  --gui-light-ScrollbarGrabActive: rgba(125.44, 125.44, 125.44, 1);
+  --gui-light-CheckMark: rgba(66.56, 151.04, 250.88, 1);
+  --gui-light-SliderGrab: rgba(66.56, 151.04, 250.88, 0.78);
+  --gui-light-SliderGrabActive: rgba(117.76, 138.24, 204.8, 0.6);
+  --gui-light-Button: rgba(66.56, 151.04, 250.88, 0.4);
+  --gui-light-ButtonHovered: rgba(66.56, 151.04, 250.88, 1);
+  --gui-light-ButtonActive: rgba(15.36, 135.68, 250.88, 1);
+  --gui-light-Header: rgba(66.56, 151.04, 250.88, 0.31);
+  --gui-light-HeaderHovered: rgba(66.56, 151.04, 250.88, 0.8);
+  --gui-light-HeaderActive: rgba(66.56, 151.04, 250.88, 1);
+  --gui-light-Separator: rgba(99.84, 99.84, 99.84, 0.62);
+  --gui-light-SeparatorHovered: rgba(35.84, 112.64, 204.8, 0.78);
+  --gui-light-SeparatorActive: rgba(35.84, 112.64, 204.8, 1);
+  --gui-light-ResizeGrip: rgba(89.6, 89.6, 89.6, 0.17);
+  --gui-light-ResizeGripHovered: rgba(66.56, 151.04, 250.88, 0.67);
+  --gui-light-ResizeGripActive: rgba(66.56, 151.04, 250.88, 0.95);
+  --gui-light-PlotLines: rgba(99.84, 99.84, 99.84, 1);
+  --gui-light-PlotLinesHovered: rgba(256, 110.08, 89.6, 1);
+  --gui-light-PlotHistogram: rgba(230.4, 179.2, 0, 1);
+  --gui-light-PlotHistogramHovered: rgba(256, 115.2, 0, 1);
+  --gui-light-TableHeaderBg: rgba(199.68, 222.72, 250.88, 1);
+  --gui-light-TableBorderStrong: rgba(145.92, 145.92, 163.84, 1);
+  --gui-light-TableBorderLight: rgba(174.08, 174.08, 189.44, 1);
+  --gui-light-TableRowBg: rgba(0, 0, 0, 0);
+  --gui-light-TableRowBgAlt: rgba(76.8, 76.8, 76.8, 0.09);
+  --gui-light-TextSelectedBg: rgba(66.56, 151.04, 250.88, 0.35);
+  --gui-light-DragDropTarget: rgba(66.56, 151.04, 250.88, 0.95);
+  --gui-light-NavWindowingHighlight: rgba(179.2, 179.2, 179.2, 0.7);
+  --gui-light-NavWindowingDimBg: rgba(51.2, 51.2, 51.2, 0.2);
+  --gui-light-ModalWindowDimBg: rgba(51.2, 51.2, 51.2, 0.35);
+}
+
+/* window scrollbar -------------------------------------------------------- */
+.gui-window *::-webkit-scrollbar {
+  border-radius: var(--gui-scrollbar-width);
+  width: var(--gui-scrollbar-width);
+}
+
+.gui-window *::-webkit-scrollbar-track {
+  border-radius: var(--gui-scrollbar-width);
+}
+
+.gui-window *::-webkit-scrollbar-thumb {
+  border-radius: var(--gui-scrollbar-width);
+}
+
+/* themes: dark */
+.gui-window.gui-theme-dark *::-webkit-scrollbar-track {
+  background: var(--gui-dark-ScrollbarBg);
+}
+
+.gui-window.gui-theme-dark *::-webkit-scrollbar-thumb {
+  background: var(--gui-dark-ScrollbarGrab);
+}
+
+.gui-window.gui-theme-dark *::-webkit-scrollbar-thumb:hover {
+  background: var(--gui-dark-ScrollbarGrabHovered);
+}
+
+/* themes: light */
+.gui-window.gui-theme-light *::-webkit-scrollbar-track {
+  background: var(--gui-light-ScrollbarBg);
+}
+
+.gui-window.gui-theme-light *::-webkit-scrollbar-thumb {
+  background: var(--gui-light-ScrollbarGrab);
+}
+
+.gui-window.gui-theme-light *::-webkit-scrollbar-thumb:hover {
+  background: var(--gui-light-ScrollbarGrabHovered);
+}
+
+/* themes: classic */
+.gui-window.gui-theme-classic *::-webkit-scrollbar-track {
+  background: var(--gui-classic-ScrollbarBg);
+}
+
+.gui-window.gui-theme-classic *::-webkit-scrollbar-thumb {
+  background: var(--gui-classic-ScrollbarGrab);
+}
+
+.gui-window.gui-theme-classic *::-webkit-scrollbar-thumb:hover {
+  background: var(--gui-classic-ScrollbarGrabHovered);
+}
+
+/* window ------------------------------------------------------------------ */
+.gui-window {
+  /* positioning */
+  position: absolute;
+
+  /* grid */
+  display: grid;
+  grid-template-columns: 10px auto 10px;
+  grid-template-rows: max-content auto 10px;
+
+  /* styling */
+  box-shadow: var(--gui-shadow);
+  font-family: var(--gui-font-family);
+  font-size: var(--gui-font-size);
+}
+
+/* title bar */
+.gui-window .gui-window-title-bar {
+  /* positioning */
+  display: flex;
+  align-items: center;
+
+  /* grid */
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+
+  /* styling */
+  user-select: none;
+  border-top-left-radius: var(--gui-window-border-radius);
+  border-top-right-radius: var(--gui-window-border-radius);
+  padding-left: var(--gui-window-title-bar-padding);
+  padding-right: calc(var(--gui-window-title-bar-padding) / 2);
+}
+
+/* icons */
+.gui-window .gui-window-title-bar i {
+  font-size: var(--gui-font-size);
+}
+
+.gui-window .gui-window-title-bar i:hover {
+  cursor: pointer;
+}
+
+/* center */
+.gui-window .gui-window-title-bar-title {
+  /* positioning */
+  width: 100%;
+  margin-top: 2px; /* TODO: This seems to be necessary because of the font */
+
+  /* grid */
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end: 4;
+
+  /* styling */
+  padding-left: var(--gui-window-title-bar-padding);
+}
+
+/* body */
+.gui-window .gui-window-body {
+  /* positioning */
+  overflow: auto;
+
+  /* grid */
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end: 4;
+
+  /* styling */
+  border-bottom-left-radius: var(--gui-window-border-radius);
+  border-bottom-right-radius: var(--gui-window-border-radius);
+}
+
+.gui-window .gui-window-body .gui-window-content {
+  /* grid */
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end: 4;
+
+  /* styling */
+  padding: var(--gui-window-content-padding);
+  height: 100%;
+}
+
+/* resize / move */
+.gui-window .gui-window-body-overlay {
+  display: none;
+}
+
+.gui-window.gui-window-moving .gui-window-body-overlay,
+.gui-window.gui-window-resizing .gui-window-body-overlay {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end: 4;
+
+  display: unset;
+}
+
+.gui-window-resize-w {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 3;
+
+  cursor: w-resize;
+}
+
+.gui-window-resize-e {
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end: 3;
+
+  cursor: e-resize;
+}
+
+.gui-window-resize-s {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 3;
+  grid-row-end: 4;
+
+  cursor: s-resize;
+}
+
+.gui-window-resize-sw {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 3;
+  grid-row-end: 4;
+
+  cursor: sw-resize;
+}
+
+.gui-window-resize-se {
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 3;
+  grid-row-end: 4;
+
+  cursor: se-resize;
+}
+
+/* themes: dark */
+/* window */
+.gui-window.gui-theme-dark {
+  color: var(--gui-dark-Text);
+}
+
+/* title bar */
+.gui-window.gui-theme-dark .gui-window-title-bar {
+  background-color: var(--gui-dark-TitleBg);
+  border: var(--gui-window-border-width) solid var(--gui-dark-Border);
+}
+
+/* body */
+.gui-window.gui-theme-dark .gui-window-body {
+  background-color: var(--gui-dark-WindowBg);
+  border-right: var(--gui-window-border-width) solid var(--gui-dark-Border);
+  border-bottom: var(--gui-window-border-width) solid var(--gui-dark-Border);
+  border-left: var(--gui-window-border-width) solid var(--gui-dark-Border);
+}
+
+/* active */
+.gui-window.gui-window-active.gui-theme-dark .gui-window-title-bar {
+  background-color: var(--gui-dark-TitleBgActive);
+}
+
+/* themes: light */
+/* window */
+.gui-window.gui-theme-light {
+  color: var(--gui-light-Text);
+}
+
+/* title bar */
+.gui-window.gui-theme-light .gui-window-title-bar {
+  background-color: var(--gui-light-TitleBg);
+  border: var(--gui-window-border-width) solid var(--gui-light-Border);
+}
+
+/* body */
+.gui-window.gui-theme-light .gui-window-body {
+  background-color: var(--gui-light-WindowBg);
+  border-right: var(--gui-window-border-width) solid var(--gui-light-Border);
+  border-bottom: var(--gui-window-border-width) solid var(--gui-light-Border);
+  border-left: var(--gui-window-border-width) solid var(--gui-light-Border);
+}
+
+/* active */
+.gui-window.gui-window-active.gui-theme-light .gui-window-title-bar {
+  background-color: var(--gui-light-TitleBgActive);
+}
+
+/* themes: classic */
+/* window */
+.gui-window.gui-theme-classic {
+  color: var(--gui-classic-Text);
+}
+
+/* title bar */
+.gui-window.gui-theme-classic .gui-window-title-bar {
+  background-color: var(--gui-classic-TitleBg);
+  border: var(--gui-window-border-width) solid var(--gui-classic-Border);
+}
+
+/* body */
+.gui-window.gui-theme-classic .gui-window-body {
+  background-color: var(--gui-classic-WindowBg);
+  border-right: var(--gui-window-border-width) solid var(--gui-classic-Border);
+  border-bottom: var(--gui-window-border-width) solid var(--gui-classic-Border);
+  border-left: var(--gui-window-border-width) solid var(--gui-classic-Border);
+}
+
+/* active */
+.gui-window.gui-window-active.gui-theme-classic .gui-window-title-bar {
+  background-color: var(--gui-classic-TitleBgActive);
+}
