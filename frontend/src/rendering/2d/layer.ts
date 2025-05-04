@@ -1,4 +1,4 @@
-import { App } from "./app.js";
+import { App } from "@/rendering/2d/app";
 
 export class Layer {
   public app: App;

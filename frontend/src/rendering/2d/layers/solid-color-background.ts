@@ -1,4 +1,4 @@
-import { Layer } from "../layer.js";
+import { Layer } from "@/rendering/2d/layer";
 
 export class SolidColorBackgroundLayer extends Layer {
   public color: string = "#000000";
