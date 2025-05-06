@@ -14,7 +14,7 @@ export class StatsLayer extends Layer {
   // corners
   public showCorners: boolean = false;
   public cornerColor: string = "red";
-  public cornerWidth: number = 4;
+  public cornerWidth: number = 1;
   public cornerLength: number = 32;
 
   render(timeDelta: number): void {
