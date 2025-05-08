@@ -19,18 +19,6 @@ services:
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
 
-  debug-mail-server:
-    build:
-      context: ./debug-mail-server/
-
-    volumes:
-      - ./:/app
-
-    user: ${DOCKER_USER}
-    working_dir: /app/debug-mail-server/
-    env_file: .env
-    command: /app/debug-mail-server/docker-entrypoint.sh
-
   backend:
     build:
       context: ./backend/

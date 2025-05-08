@@ -114,9 +114,4 @@ MEDIA_URL = '/media/'
 
 # mail
 if MAIL_DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = 'debug-mail-server'
-    EMAIL_PORT = 1025
-    EMAIL_USE_TLS = False
-    EMAIL_USE_SSL = False
-    DEFAULT_FROM_EMAIL = 'pillowfort@localhost'
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
