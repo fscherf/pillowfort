@@ -6,6 +6,7 @@ module.exports = {
   entry: {
     "game": "./src/views/game/index.ts",
     "gui": "./src/views/gui/index.ts",
+    "json-rpc-client": "./src/views/json-rpc/client.ts",
   },
   devtool: "inline-source-map",
   module: {

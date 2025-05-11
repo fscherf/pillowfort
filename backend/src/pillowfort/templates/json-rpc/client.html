@@ -1,0 +1,11 @@
+{% extends "json-rpc/base.html" %}
+{% load pillowfort %}
+
+{% block content %}
+  <h1>JSON RPC Client</h1>
+  <div id="messages"></div>
+{% endblock %}
+
+{% block script %}
+  <script type="module" src="{% frontend_static '/dist/json-rpc-client.bundle.js' %}"></script>
+{% endblock %}
