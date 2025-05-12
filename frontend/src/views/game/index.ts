@@ -7,7 +7,6 @@ declare const window: {
 } & Window;
 
 window.addEventListener("load", () => {
-
   // setup app
   const rootElement: HTMLElement = document.querySelector("#game");
 

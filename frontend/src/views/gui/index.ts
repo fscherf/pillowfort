@@ -1,7 +1,10 @@
 import { SolidColorBackgroundLayer } from "@/rendering/2d/layers/solid-color-background";
 import { CallbackLayer } from "@/rendering/2d/layers/callback";
+import { GUILinkComponent } from "@/gui/components/link";
+import { GUIListComponent } from "@/gui/components/list";
 import { StatsLayer } from "@/rendering/2d/layers/stats";
 import { Layer } from "@/rendering/2d/layer";
+import { GUIWindow } from "@/gui/window";
 import { App } from "@/rendering/2d/app";
 
 import {
@@ -11,7 +14,7 @@ import {
 
 declare const window: {
   guiWindowManager: GUIWindowManager;
-  app: App;
+  apps: Array<App>;
 } & Window;
 
 function createMainApp(rootElement: HTMLElement) {
@@ -112,7 +115,7 @@ function createMainApp(rootElement: HTMLElement) {
 }
 
 window.addEventListener("load", () => {
-  let app: App;
+  const apps: Array<App> = [];
 
   // setup GUI
   const guiWindowDefinitions: GUIWindowDefinitionsType = new Map();
@@ -122,14 +125,47 @@ window.addEventListener("load", () => {
     guiWindowDefinitions: guiWindowDefinitions,
   });
 
-  // main
-  guiWindowDefinitions.set("main", (guiWindow) => {
-    app = createMainApp(guiWindow.contentElement);
-
-    guiWindow.setTitle("Main");
+  // define window classes
+  guiWindowDefinitions.set("menu", (guiWindow) => {
+    guiWindow.setTitle("Menu");
     guiWindow.setClosable(false);
+
+    const list: GUIListComponent = new GUIListComponent();
+    let link: GUILinkComponent;
+
+    // links: New App
+    link = new GUILinkComponent();
+
+    link.setText("New App");
+
+    link.setCallback(() => {
+      guiWindowManager.createWindow("app");
+    });
+
+    list.addItem(link);
+
+    // links: Reset Window Manager
+    link = new GUILinkComponent();
+
+    link.setText("Reset Window Manager");
+
+    link.setCallback(() => {
+      guiWindowManager.closeAll();
+      window.location.reload();
+    });
+
+    list.addItem(link);
+
+    // finish
+    guiWindow.addComponent(list);
+  });
+
+  guiWindowDefinitions.set("app", (guiWindow) => {
+    const app: App = createMainApp(guiWindow.contentElement);
+
+    guiWindow.setTitle("App");
+    guiWindow.setClosable(true);
     guiWindow.setSize(800, 600);
-    guiWindow.setPosition(10, 10);
 
     guiWindow.onStart = () => {
       app.scale();
@@ -139,11 +175,30 @@ window.addEventListener("load", () => {
     guiWindow.onResize = () => {
       app.scale();
     };
+
+    apps.push(app);
   });
 
-  guiWindowManager.getOrCreateWindow("main");
+  // setup window state
+  if (!guiWindowManager.setupState("pillowfort.gui.v1")) {
+    // app
+    const mainWindow: GUIWindow = guiWindowManager.getOrCreateWindow("app");
+
+    mainWindow.setSize(800, 600);
+    mainWindow.setPosition(320, 10);
+  }
+
+  // menu
+  let menuWindow: GUIWindow | null = guiWindowManager.getWindow("menu");
+
+  if (!menuWindow) {
+    menuWindow = guiWindowManager.createWindow("menu");
+
+    menuWindow.setSize(300, 600);
+    menuWindow.setPosition(10, 10);
+  }
 
   // finish
   window.guiWindowManager = guiWindowManager;
-  window.app = app;
+  window.apps = apps;
 });

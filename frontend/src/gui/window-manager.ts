@@ -13,6 +13,7 @@ export class GUIWindowManager {
 
   public guiWindowDefinitions: GUIWindowDefinitionsType;
   public guiWindows: Array<GUIWindow>;
+  public stateName: string;
 
   constructor({
     rootElement,
@@ -108,5 +109,66 @@ export class GUIWindowManager {
         _guiWindow.setActive(false);
       }
     }
+  }
+
+  public removeWindow(guiWindow: GUIWindow): void {
+    this.guiWindows = this.guiWindows.filter((_guiWindow) => {
+      return guiWindow != _guiWindow;
+    });
+  }
+
+  public closeAll(): void {
+    for (const guiWindow of this.guiWindows) {
+      guiWindow.close();
+    }
+  }
+
+  /* state management */
+  public updateState(): boolean {
+    if (!this.stateName) {
+      return false;
+    }
+
+    const state = [];
+
+    for (const guiWindow of this.getWindowsSortedByZIndex()) {
+      state.push({
+        identifier: guiWindow.identifier,
+        position: guiWindow.getPosition(),
+        size: guiWindow.getSize(),
+      });
+    }
+
+    localStorage.setItem(this.stateName, JSON.stringify(state));
+
+    return true;
+  }
+
+  public setupState(stateName: string): boolean {
+    this.stateName = stateName;
+
+    const state = JSON.parse(localStorage.getItem(stateName));
+
+    if (state == undefined || state.length == 0) {
+      return false;
+    }
+
+    for (const guiWindowState of state) {
+      const guiWindow: GUIWindow = this.createWindow(
+        guiWindowState.identifier[0],
+        guiWindowState.identifier[1],
+      );
+
+      guiWindow.setPosition(
+        guiWindowState.position.x,
+        guiWindowState.position.y,
+      );
+
+      guiWindow.setSize(guiWindowState.size.width, guiWindowState.size.height);
+
+      guiWindow.raise();
+    }
+
+    return true;
   }
 }

@@ -1,3 +1,4 @@
+import { Component } from "@/gui/component";
 import { GUIWindowManager } from "@/gui/window-manager";
 
 const WINDOW_THEMES: Array<string> = ["light", "dark", "classic"];
@@ -33,6 +34,7 @@ const WINDOW_DEFAULT_ON_RESIZE = (guiWindow: GUIWindow): void => {};
 export class GUIWindow {
   public guiWindowManager: GUIWindowManager;
   public identifier: Array<string>;
+  public components: Array<Component>;
 
   public rootElement: HTMLElement;
   public titleBarElement: HTMLElement;
@@ -85,6 +87,9 @@ export class GUIWindow {
     this.setSize(500, 300);
     this.setCollapsible(true);
     this.setClosable(true);
+
+    // components
+    this.components = [];
   }
 
   /* zIndex */
@@ -100,6 +105,8 @@ export class GUIWindow {
   public setSize(width: number, height: number): void {
     this.rootElement.style.width = `${width}px`;
     this.rootElement.style.height = `${height}px`;
+
+    this.guiWindowManager.updateState();
   }
 
   public getSize(): { width: number; height: number } {
@@ -113,6 +120,8 @@ export class GUIWindow {
   public setPosition(x: number, y: number): void {
     this.rootElement.style.left = `${x}px`;
     this.rootElement.style.top = `${y}px`;
+
+    this.guiWindowManager.updateState();
   }
 
   public getPosition(): { x: number; y: number } {
@@ -142,6 +151,8 @@ export class GUIWindow {
     } else {
       this.rootElement.classList.remove("gui-window-active");
     }
+
+    this.guiWindowManager.updateState();
   }
 
   public getActive(): boolean {
@@ -172,6 +183,7 @@ export class GUIWindow {
   /* actions */
   public raise(): void {
     this.guiWindowManager.raiseWindow(this);
+    this.guiWindowManager.updateState();
   }
 
   public collapse(): void {}
@@ -179,6 +191,9 @@ export class GUIWindow {
   public close(): void {
     this.onClose(this);
     this.rootElement.remove();
+
+    this.guiWindowManager.removeWindow(this);
+    this.guiWindowManager.updateState();
   }
 
   /* event listener */
@@ -220,6 +235,8 @@ export class GUIWindow {
       window.removeEventListener("mouseup", handleMouseUp);
 
       this.rootElement.classList.remove(WINDOW_MOVING_CLASS);
+
+      this.guiWindowManager.updateState();
     };
 
     this.titleBarElement.addEventListener("mousedown", (event: MouseEvent) => {
@@ -302,6 +319,8 @@ export class GUIWindow {
       window.removeEventListener("mouseup", resizeStop);
 
       this.rootElement.classList.remove(WINDOW_RESIZING_CLASS);
+
+      this.guiWindowManager.updateState();
     };
 
     const resizers: NodeListOf<HTMLElement> = this.rootElement.querySelectorAll(
@@ -336,5 +355,11 @@ export class GUIWindow {
 
       this.close();
     });
+  }
+
+  // components
+  public addComponent(component: Component): void {
+    this.components.push(component);
+    this.contentElement.appendChild(component.rootElement);
   }
 }
