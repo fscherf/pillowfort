@@ -66,6 +66,48 @@ function createMainApp(rootElement: HTMLElement) {
 
   app.layerAdd(miniMapLayer);
 
+  // turning rect
+  class TurningRectLayer extends Layer {
+    private rotation: number; // degrees
+    private velocity: number = 100; // 100 degrees per second
+
+    constructor() {
+      super();
+
+      this.name = "turning-rect";
+      this.zIndex = 200;
+
+      this.rotation = 0;
+    }
+
+    public tick(timeDelta: number): void {
+      this.rotation = this.rotation + (this.velocity * timeDelta) / 1000;
+
+      if (this.rotation > 360) {
+        this.rotation = 0;
+      }
+    }
+
+    public render(timeDelta: number): void {
+      const width: number = this.app.viewport.width / 3;
+      const height: number = this.app.viewport.height / 3;
+      const x: number = this.app.viewport.width / 2;
+      const y: number = this.app.viewport.height / 2;
+
+      this.app.ctx.translate(x, y);
+      this.app.ctx.rotate((this.rotation * Math.PI) / 180);
+
+      this.app.ctx.fillStyle = "cyan";
+
+      this.app.ctx.fillRect((width / 2) * -1, (height / 2) * -1, width, height);
+
+      this.app.ctx.resetTransform();
+    }
+  }
+
+  app.layerAdd(new TurningRectLayer());
+
+  // finish
   return app;
 }
 
