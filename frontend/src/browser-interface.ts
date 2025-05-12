@@ -37,6 +37,9 @@ export class TestCanvasRenderingContext2D {
 
   public fillRect(): void {}
   public fillText(): void {}
+  public rotate(): void {}
+  public translate(): void {}
+  public resetTransform(): void {}
 }
 
 export class TestBrowserInterface extends BrowserInterface {
