@@ -1,0 +1,22 @@
+{% load pillowfort %}
+<!DOCTYPE html>
+{% block html_tag %}<html lang="en">{% endblock %}
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}pillowfort{% endblock %}</title>
+    {% block style %}
+      <link rel="stylesheet" href="{% frontend_static '/vendor/fonts/fontawesome-free-6.7.2-web/css/all.min.css' %}">
+      <link rel="stylesheet" href="{% frontend_static '/vendor/fonts/proggyfonts/all.css' %}">
+      <link rel="stylesheet" href="{% frontend_static '/static/css/game.css' %}">
+      {% block extra_style %}{% endblock %}
+    {% endblock %}
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+    {% block script %}
+      {% block extra_script %}{% endblock %}
+    {% endblock %}
+  </body>
+</html>

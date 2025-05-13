@@ -118,7 +118,7 @@ window.addEventListener("load", () => {
   const guiWindowDefinitions: GUIWindowDefinitionsType = new Map();
 
   const guiWindowManager: GUIWindowManager = new GUIWindowManager({
-    rootElement: document.querySelector("#gui"),
+    rootElement: document.querySelector(".gui-window-manager"),
     guiWindowDefinitions: guiWindowDefinitions,
   });
 
@@ -129,6 +129,7 @@ window.addEventListener("load", () => {
     guiWindow.setTitle("Main");
     guiWindow.setClosable(false);
     guiWindow.setSize(800, 600);
+    guiWindow.setPosition(10, 10);
 
     guiWindow.onStart = () => {
       app.scale();

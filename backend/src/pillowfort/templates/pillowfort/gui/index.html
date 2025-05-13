@@ -1,0 +1,10 @@
+{% extends "pillowfort/gui/base.html" %}
+{% load pillowfort %}
+
+{% block content %}
+  <div class="gui-window-manager"></div>
+{% endblock %}
+
+{% block script %}
+  <script type="module" src="{% frontend_static '/dist/gui.bundle.js' %}"></script>
+{% endblock %}

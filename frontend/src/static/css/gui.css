@@ -4,6 +4,9 @@
   --gui-font-size: 16px;
   --gui-shadow: 10px 10px 34px -13px rgba(0, 0, 0, 0.3);
 
+  /* window manager */
+  --gui-window-manager-background-color: #72909a;
+
   /* windows */
   --gui-window-border-radius: 8px;
   --gui-window-border-width: 1px;
@@ -161,6 +164,19 @@
   --gui-light-ModalWindowDimBg: rgba(51.2, 51.2, 51.2, 0.35);
 }
 
+/* window manager ---------------------------------------------------------- */
+.gui-window-manager {
+  /* positioning */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  /* styling */
+  background-color: var(--gui-window-manager-background-color);
+}
+
 /* window scrollbar -------------------------------------------------------- */
 .gui-window *::-webkit-scrollbar {
   border-radius: var(--gui-scrollbar-width);
@@ -228,6 +244,11 @@
   box-shadow: var(--gui-shadow);
   font-family: var(--gui-font-family);
   font-size: var(--gui-font-size);
+}
+
+.gui-window,
+.gui-window * {
+  box-sizing: border-box;
 }
 
 /* title bar */

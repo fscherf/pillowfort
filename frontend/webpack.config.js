@@ -3,7 +3,8 @@ const path = require("path");
 module.exports = {
   mode: "production",
   entry: {
-    "basic-2d-rendering": "./src/basic-2d-rendering.ts",
+    "game": "./src/views/game/index.ts",
+    "gui": "./src/views/gui/index.ts",
   },
   devtool: "inline-source-map",
   module: {

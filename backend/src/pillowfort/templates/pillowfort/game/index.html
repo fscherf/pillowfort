@@ -1,0 +1,10 @@
+{% extends "pillowfort/game/base.html" %}
+{% load pillowfort %}
+
+{% block content %}
+  <div id="game"></div>
+{% endblock %}
+
+{% block script %}
+  <script type="module" src="{% frontend_static '/dist/game.bundle.js' %}"></script>
+{% endblock %}
