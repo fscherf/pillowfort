@@ -111,14 +111,14 @@ export class GUIWindow {
 
   /* position */
   public setPosition(x: number, y: number): void {
-    this.rootElement.style.top = `${x}px`;
-    this.rootElement.style.left = `${y}px`;
+    this.rootElement.style.left = `${x}px`;
+    this.rootElement.style.top = `${y}px`;
   }
 
   public getPosition(): { x: number; y: number } {
     return {
-      x: parseInt(this.rootElement.style.top),
-      y: parseInt(this.rootElement.style.left),
+      x: parseInt(this.rootElement.style.left),
+      y: parseInt(this.rootElement.style.top),
     };
   }
 
