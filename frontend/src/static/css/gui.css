@@ -458,3 +458,13 @@
 .gui-window.gui-window-active.gui-theme-classic .gui-window-title-bar {
   background-color: var(--gui-classic-TitleBgActive);
 }
+
+/* components -------------------------------------------------------------- */
+.gui-component-link {
+  cursor: pointer;
+}
+
+.gui-component-list {
+  padding: 0 0 0 1em;
+  margin: 0;
+}
