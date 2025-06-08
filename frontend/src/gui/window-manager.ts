@@ -38,7 +38,7 @@ export class GUIWindowManager {
     ];
 
     for (const guiWindow of this.guiWindows) {
-      if (guiWindow.identifier == _identifier) {
+      if (JSON.stringify(guiWindow.identifier) == JSON.stringify(_identifier)) {
         return guiWindow;
       }
     }
