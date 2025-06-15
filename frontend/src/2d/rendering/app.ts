@@ -4,10 +4,12 @@ import {
 } from "@/browser-interface";
 import { Viewport } from "@/2d/rendering/types";
 import { Layer } from "@/2d/rendering/layer";
+import { Controller } from "@/controller";
 
 export class App {
   public rootElement: HTMLElement;
   public browserInterface: BrowserInterface;
+  public controller: Controller;
   public viewport: Viewport;
   public appElement: HTMLDivElement;
   public canvasElement: HTMLCanvasElement;
@@ -67,6 +69,8 @@ export class App {
       "canvas",
     ) as HTMLCanvasElement;
 
+    this.canvasElement.style.outline = "0";
+
     this.ctx = this.browserInterface.get2dContext(this.canvasElement);
 
     // setup layers
@@ -82,6 +86,11 @@ export class App {
       }
 
       this.scale();
+    });
+
+    // setup controller
+    this.controller = new Controller({
+      element: this.appElement,
     });
 
     // finish

@@ -1,4 +1,5 @@
 import { SolidColorBackgroundLayer } from "@/2d/rendering/layers/solid-color-background";
+import { GUIAttributeTableComponent } from "@/gui/components/table";
 import { CallbackLayer } from "@/2d/rendering/layers/callback";
 import { GUILinkComponent } from "@/gui/components/link";
 import { GUIListComponent } from "@/gui/components/list";
@@ -6,6 +7,7 @@ import { StatsLayer } from "@/2d/rendering/layers/stats";
 import { Layer } from "@/2d/rendering/layer";
 import { GUIWindow } from "@/gui/window";
 import { App } from "@/2d/rendering/app";
+import { retry } from "@/utils";
 
 import {
   GUIWindowManager,
@@ -144,6 +146,17 @@ window.addEventListener("load", () => {
 
     list.addItem(link);
 
+    // links: controller
+    link = new GUILinkComponent();
+
+    link.setText("Controller");
+
+    link.setCallback(() => {
+      guiWindowManager.getOrCreateWindow("controller");
+    });
+
+    list.addItem(link);
+
     // links: Reset Window Manager
     link = new GUILinkComponent();
 
@@ -177,6 +190,34 @@ window.addEventListener("load", () => {
     };
 
     apps.push(app);
+  });
+
+  guiWindowDefinitions.set("controller", (guiWindow) => {
+    guiWindow.setTitle("Controller");
+    guiWindow.setClosable(true);
+    guiWindow.setSize(300, 400);
+
+    const table: GUIAttributeTableComponent = new GUIAttributeTableComponent();
+
+    table.addAttribute("mouseOver", "Mouse Over");
+    table.addAttribute("mouseX", "Mouse X");
+    table.addAttribute("mouseY", "Mouse Y");
+
+    table.addAttribute("mouseDown", "Mouse Down");
+    table.addAttribute("mouseDownX", "Mouse Down x");
+    table.addAttribute("mouseDownY", "Mouse Down Y");
+
+    table.addAttribute("activeKeys", "Active Keys");
+    table.addAttribute("activeActions", "Active Actions");
+
+    retry(() => {
+      apps[0].controller.onChange = () => {
+        table.update(apps[0].controller.getState());
+      };
+    });
+
+    // finish
+    guiWindow.addComponent(table);
   });
 
   // setup window state
