@@ -2,8 +2,8 @@ import {
   BrowserInterface,
   TestCanvasRenderingContext2D,
 } from "@/browser-interface";
-import { Viewport } from "@/rendering/2d/types";
-import { Layer } from "@/rendering/2d/layer";
+import { Viewport } from "@/2d/rendering/types";
+import { Layer } from "@/2d/rendering/layer";
 
 export class App {
   public rootElement: HTMLElement;

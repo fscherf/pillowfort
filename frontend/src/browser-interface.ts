@@ -1,4 +1,4 @@
-import { Viewport } from "./rendering/2d/types.js";
+import { Viewport } from "./2d/rendering/types.js";
 
 export class BrowserInterface {
   public getViewport(element: HTMLElement): Viewport {

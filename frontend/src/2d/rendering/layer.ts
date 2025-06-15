@@ -1,6 +1,6 @@
 import { parseCSSValue, CSSValue } from "@/css";
-import { Viewport } from "@/rendering/2d/types";
-import { App } from "@/rendering/2d/app";
+import { Viewport } from "@/2d/rendering/types";
+import { App } from "@/2d/rendering/app";
 
 export class Layer {
   public app: App;

@@ -1,11 +1,11 @@
-import { SolidColorBackgroundLayer } from "@/rendering/2d/layers/solid-color-background";
-import { CallbackLayer } from "@/rendering/2d/layers/callback";
+import { SolidColorBackgroundLayer } from "@/2d/rendering/layers/solid-color-background";
+import { CallbackLayer } from "@/2d/rendering/layers/callback";
 import { GUILinkComponent } from "@/gui/components/link";
 import { GUIListComponent } from "@/gui/components/list";
-import { StatsLayer } from "@/rendering/2d/layers/stats";
-import { Layer } from "@/rendering/2d/layer";
+import { StatsLayer } from "@/2d/rendering/layers/stats";
+import { Layer } from "@/2d/rendering/layer";
 import { GUIWindow } from "@/gui/window";
-import { App } from "@/rendering/2d/app";
+import { App } from "@/2d/rendering/app";
 
 import {
   GUIWindowManager,

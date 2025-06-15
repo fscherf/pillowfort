@@ -1,6 +1,6 @@
-import { SolidColorBackgroundLayer } from "@/rendering/2d/layers/solid-color-background";
-import { StatsLayer } from "@/rendering/2d/layers/stats";
-import { App } from "@/rendering/2d/app";
+import { SolidColorBackgroundLayer } from "@/2d/rendering/layers/solid-color-background";
+import { StatsLayer } from "@/2d/rendering/layers/stats";
+import { App } from "@/2d/rendering/app";
 
 declare const window: {
   app: App;
