@@ -1,13 +1,10 @@
-import { SolidColorBackgroundLayer } from "@/2d/rendering/layers/solid-color-background";
 import { GUIAttributeTableComponent } from "@/gui/components/table";
-import { CallbackLayer } from "@/2d/rendering/layers/callback";
 import { GUILinkComponent } from "@/gui/components/link";
 import { GUIListComponent } from "@/gui/components/list";
-import { StatsLayer } from "@/2d/rendering/layers/stats";
 import { Layer } from "@/2d/rendering/layer";
 import { GUIWindow } from "@/gui/window";
-import { App } from "@/2d/rendering/app";
 import { retry } from "@/utils";
+import { Game } from "@/2d/game";
 
 import {
   GUIWindowManager,
@@ -16,116 +13,11 @@ import {
 
 declare const window: {
   guiWindowManager: GUIWindowManager;
-  apps: Array<App>;
+  game: Game;
 } & Window;
 
-function createMainApp(rootElement: HTMLElement) {
-  const app: App = new App({
-    rootElement: rootElement,
-  });
-
-  app.autoScale = true;
-
-  // background layer
-  const backgroundLayer: SolidColorBackgroundLayer =
-    new SolidColorBackgroundLayer();
-
-  backgroundLayer.color = "#000000";
-  backgroundLayer.name = "background";
-  backgroundLayer.zIndex = 1000;
-
-  app.layerAdd(backgroundLayer);
-
-  // stats layer
-  const statsLayer: StatsLayer = new StatsLayer();
-
-  statsLayer.name = "stats";
-  statsLayer.zIndex = -1;
-  statsLayer.showFps = true;
-  statsLayer.showTps = true;
-  statsLayer.showCorners = true;
-
-  app.layerAdd(statsLayer);
-
-  // mini map
-  const miniMapLayer: CallbackLayer = new CallbackLayer();
-
-  miniMapLayer.name = "mini-map";
-  miniMapLayer.zIndex = 100;
-
-  miniMapLayer.width = "100px";
-  miniMapLayer.height = "75px";
-  miniMapLayer.right = "20px";
-  miniMapLayer.bottom = "20px";
-
-  miniMapLayer.callback = (layer: Layer, timeDelta: number) => {
-    layer.app.ctx.fillStyle = "green";
-
-    if (layer.app.controller.hoveredLayer == layer) {
-      layer.app.ctx.fillStyle = "red";
-    }
-
-    layer.app.ctx.fillRect(
-      layer.viewport.x,
-      layer.viewport.y,
-      layer.viewport.width,
-      layer.viewport.height,
-    );
-  };
-
-  app.layerAdd(miniMapLayer);
-
-  // turning rect
-  class TurningRectLayer extends Layer {
-    private rotation: number; // degrees
-    private velocity: number = 100; // 100 degrees per second
-
-    constructor() {
-      super();
-
-      this.name = "turning-rect";
-      this.zIndex = 200;
-
-      this.rotation = 0;
-    }
-
-    public tick(timeDelta: number): void {
-      this.rotation = this.rotation + (this.velocity * timeDelta) / 1000;
-
-      if (this.rotation > 360) {
-        this.rotation = 0;
-      }
-    }
-
-    public render(timeDelta: number): void {
-      const width: number = this.app.viewport.width / 3;
-      const height: number = this.app.viewport.height / 3;
-      const x: number = this.app.viewport.width / 2;
-      const y: number = this.app.viewport.height / 2;
-
-      this.app.ctx.translate(x, y);
-      this.app.ctx.rotate((this.rotation * Math.PI) / 180);
-
-      this.app.ctx.fillStyle = "cyan";
-
-      if (this.app.controller.hoveredLayer == this) {
-        this.app.ctx.fillStyle = "red";
-      }
-
-      this.app.ctx.fillRect((width / 2) * -1, (height / 2) * -1, width, height);
-
-      this.app.ctx.resetTransform();
-    }
-  }
-
-  app.layerAdd(new TurningRectLayer());
-
-  // finish
-  return app;
-}
-
 window.addEventListener("load", () => {
-  const apps: Array<App> = [];
+  let game: Game;
 
   // setup GUI
   const guiWindowDefinitions: GUIWindowDefinitionsType = new Map();
@@ -143,18 +35,7 @@ window.addEventListener("load", () => {
     const list: GUIListComponent = new GUIListComponent();
     let link: GUILinkComponent;
 
-    // links: New App
-    link = new GUILinkComponent();
-
-    link.setText("New App");
-
-    link.setCallback(() => {
-      guiWindowManager.createWindow("app");
-    });
-
-    list.addItem(link);
-
-    // links: controller
+    // links: rendering
     link = new GUILinkComponent();
 
     link.setText("Rendering");
@@ -192,23 +73,25 @@ window.addEventListener("load", () => {
     guiWindow.addComponent(list);
   });
 
-  guiWindowDefinitions.set("app", (guiWindow) => {
-    const app: App = createMainApp(guiWindow.contentElement);
+  guiWindowDefinitions.set("game", (guiWindow) => {
+    game = new Game({
+      rootElement: guiWindow.contentElement,
+    });
 
-    guiWindow.setTitle("App");
-    guiWindow.setClosable(true);
+    guiWindow.setTitle("Game");
+    guiWindow.setClosable(false);
     guiWindow.setSize(800, 600);
 
     guiWindow.onStart = () => {
-      app.scale();
-      app.start();
+      game.app.scale();
+      game.app.start();
     };
 
     guiWindow.onResize = () => {
-      app.scale();
+      game.app.scale();
     };
 
-    apps.push(app);
+    window.game = game;
   });
 
   guiWindowDefinitions.set("controller", (guiWindow) => {
@@ -239,8 +122,8 @@ window.addEventListener("load", () => {
     table.addAttribute("activeActions", "Active Actions");
 
     retry(() => {
-      apps[0].controller.onChange = () => {
-        table.update(apps[0].controller.getState());
+      game.app.controller.onChange = () => {
+        table.update(game.app.controller.getState());
       };
     });
 
@@ -256,7 +139,7 @@ window.addEventListener("load", () => {
     const table: GUIAttributeTableComponent = new GUIAttributeTableComponent();
 
     retry(() => {
-      const statsLayer: Layer = apps[0].layerGetByName("stats");
+      const statsLayer: Layer = game.app.layerGetByName("stats");
 
       table.clear();
 
@@ -265,7 +148,7 @@ window.addEventListener("load", () => {
       table.addCheckbox(statsLayer, "showTps", "Show TPS");
       table.addCheckbox(statsLayer, "showCorners", "Show Corners");
 
-      table.addRange(apps[0], "tpsMax", "Max TPS", 1, 120);
+      table.addRange(game.app, "tpsMax", "Max TPS", 1, 120);
     });
 
     // finish
@@ -274,11 +157,11 @@ window.addEventListener("load", () => {
 
   // setup window state
   if (!guiWindowManager.setupState("pillowfort.gui.v1")) {
-    // app
-    const mainWindow: GUIWindow = guiWindowManager.getOrCreateWindow("app");
+    // game
+    const gameWindow: GUIWindow = guiWindowManager.getOrCreateWindow("game");
 
-    mainWindow.setSize(800, 600);
-    mainWindow.setPosition(320, 10);
+    gameWindow.setSize(800, 600);
+    gameWindow.setPosition(320, 10);
   }
 
   // menu
@@ -293,5 +176,4 @@ window.addEventListener("load", () => {
 
   // finish
   window.guiWindowManager = guiWindowManager;
-  window.apps = apps;
 });
