@@ -468,3 +468,41 @@
   padding: 0 0 0 1em;
   margin: 0;
 }
+
+/* attribute-table */
+.gui-window.gui-theme-light .gui-component-attribute-table {
+  border: var(--gui-window-border-width) solid var(--gui-light-Border);
+}
+
+.gui-window.gui-theme-light .gui-component-attribute-table tr:nth-child(even) {
+  background-color: var(--gui-light-TitleBg);
+}
+
+.gui-window.gui-theme-dark .gui-component-attribute-table {
+  border: var(--gui-window-border-width) solid var(--gui-dark-Border);
+}
+
+.gui-window.gui-theme-dark .gui-component-attribute-table tr:nth-child(even) {
+  background-color: var(--gui-dark-TitleBg);
+}
+
+.gui-window.gui-theme-dark .gui-component-attribute-table th {
+  border-right: var(--gui-window-border-width) solid var(--gui-dark-Border);
+}
+
+.gui-component-attribute-table {
+  width: 100%;
+  table-layout: fixed;
+  overflow-wrap: break-word;
+  border-spacing: 0;
+  line-height: 1em;
+}
+
+.gui-component-attribute-table th,
+.gui-component-attribute-table td {
+  width: 50%;
+  text-align: left;
+  vertical-align: top;
+  font-weight: normal;
+  padding-left: 0.2em;
+}
