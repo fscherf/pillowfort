@@ -149,6 +149,17 @@ window.addEventListener("load", () => {
     // links: controller
     link = new GUILinkComponent();
 
+    link.setText("Rendering");
+
+    link.setCallback(() => {
+      guiWindowManager.getOrCreateWindow("rendering");
+    });
+
+    list.addItem(link);
+
+    // links: controller
+    link = new GUILinkComponent();
+
     link.setText("Controller");
 
     link.setCallback(() => {
@@ -214,6 +225,30 @@ window.addEventListener("load", () => {
       apps[0].controller.onChange = () => {
         table.update(apps[0].controller.getState());
       };
+    });
+
+    // finish
+    guiWindow.addComponent(table);
+  });
+
+  guiWindowDefinitions.set("rendering", (guiWindow) => {
+    guiWindow.setTitle("Rendering");
+    guiWindow.setClosable(true);
+    guiWindow.setSize(300, 400);
+
+    const table: GUIAttributeTableComponent = new GUIAttributeTableComponent();
+
+    retry(() => {
+      const statsLayer: Layer = apps[0].layerGetByName("stats");
+
+      table.clear();
+
+      table.addCheckbox(statsLayer, "visible", "Show Stats");
+      table.addCheckbox(statsLayer, "showFps", "Show FPS");
+      table.addCheckbox(statsLayer, "showTps", "Show TPS");
+      table.addCheckbox(statsLayer, "showCorners", "Show Corners");
+
+      table.addRange(apps[0], "tpsMax", "Max TPS", 1, 120);
     });
 
     // finish
