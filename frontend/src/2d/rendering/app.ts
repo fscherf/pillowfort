@@ -19,10 +19,11 @@ export class App {
 
   // configuration
   public accumulatorMaxInMs: number = 250;
-  public tpsMax: number = 60;
   public autoScale: boolean = false;
   public width: number = 800;
   public height: number = 600;
+
+  private _tpsMax: number;
 
   // layers
   private layersSortedByZIndex: Array<Layer>;
@@ -88,6 +89,17 @@ export class App {
     this.appElement.style.display = "block";
   }
 
+  // properties
+  // tpsMax
+  public get tpsMax(): number {
+    return this._tpsMax;
+  }
+
+  public set tpsMax(tpsMax: number) {
+    this._tpsMax = tpsMax;
+    this.fixedDeltaTime = 1000 / this._tpsMax;
+  }
+
   // main loop
   private mainLoop(timestamp: number): void {
     const timeDelta: number = timestamp - this.lastTimestamp;
@@ -142,11 +154,6 @@ export class App {
     }
   }
 
-  public setTpsMax(tpsMax: number): void {
-    this.tpsMax = tpsMax;
-    this.fixedDeltaTime = 1000 / this.tpsMax;
-  }
-
   public start(): void {
     // initial scaling
     if (this.autoScale) {
@@ -166,7 +173,7 @@ export class App {
     this.lastTpsUpdateTimestamp = 0;
     this.lastFpsUpdateTimestamp = 0;
 
-    this.setTpsMax(this.tpsMax);
+    this.tpsMax = 60;
 
     // start rendering loop
     requestAnimationFrame(this.mainLoop.bind(this));
