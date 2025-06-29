@@ -1,3 +1,5 @@
+type Timer = ReturnType<typeof setTimeout>;
+
 export class Controller {
   public element: HTMLElement;
   public mappingsNormal: Map<string, string>;
@@ -12,10 +14,15 @@ export class Controller {
   public mouseDownX: number;
   public mouseDownY: number;
 
+  public wheelDeltaX: number;
+  public wheelDeltaY: number;
+
   public activeKeys: Array<string>;
   public activeActions: Array<string>;
 
   public onChange: () => void;
+
+  private wheelEventTimer: Timer;
 
   constructor({ element }: { element: HTMLElement }) {
     this.element = element;
@@ -27,6 +34,9 @@ export class Controller {
     this.mouseY = 0;
     this.mouseDownX = 0;
     this.mouseDownY = 0;
+
+    this.wheelDeltaX = 0;
+    this.wheelDeltaY = 0;
 
     this.activeKeys = [];
     this.activeActions = [];
@@ -91,6 +101,7 @@ export class Controller {
     this.element.addEventListener("mouseup", this.handleMouseUpEvent);
     this.element.addEventListener("mousedown", this.handleMouseDownEvent);
     this.element.addEventListener("keyup", this.handleKeyEvent);
+    this.element.addEventListener("wheel", this.handleWheelEvent);
 
     window.addEventListener("keyup", this.handleKeyEvent);
     window.addEventListener("blur", this.handleBlurEvent);
@@ -193,6 +204,29 @@ export class Controller {
     this.runOnChange();
   };
 
+  private handleWheelEvent = (event: WheelEvent): void => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.wheelDeltaX = event.deltaX;
+    this.wheelDeltaY = event.deltaY;
+
+    // debouncing
+    // There is no dedicated stop event for wheel events so we need
+    // to wait until no new wheel events are coming and use that as the end
+    // of the event.
+    clearTimeout(this.wheelEventTimer);
+
+    this.wheelEventTimer = setTimeout(() => {
+      this.wheelDeltaX = 0;
+      this.wheelDeltaY = 0;
+
+      this.runOnChange();
+    }, 100);
+
+    this.runOnChange();
+  };
+
   public getState = (): object => {
     return {
       mouseOver: this.mouseOver,
@@ -201,6 +235,8 @@ export class Controller {
       mouseY: this.mouseY,
       mouseDownX: this.mouseDownX,
       mouseDownY: this.mouseDownY,
+      wheelDeltaX: this.wheelDeltaX,
+      wheelDeltaY: this.wheelDeltaY,
       activeKeys: this.activeKeys,
       activeActions: this.activeActions,
     };

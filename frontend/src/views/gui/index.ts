@@ -218,6 +218,9 @@ window.addEventListener("load", () => {
     table.addAttribute("mouseDownX", "Mouse Down x");
     table.addAttribute("mouseDownY", "Mouse Down Y");
 
+    table.addAttribute("wheelDeltaX", "Wheel Delta X");
+    table.addAttribute("wheelDeltaY", "Wheel Delta Y");
+
     table.addAttribute("activeKeys", "Active Keys");
     table.addAttribute("activeActions", "Active Actions");
 
