@@ -210,6 +210,7 @@ window.addEventListener("load", () => {
 
     const table: GUIAttributeTableComponent = new GUIAttributeTableComponent();
 
+    table.addAttribute("focused", "Focused");
     table.addAttribute("mouseOver", "Mouse Over");
     table.addAttribute("mouseX", "Mouse X");
     table.addAttribute("mouseY", "Mouse Y");

@@ -7,6 +7,8 @@ export class Controller {
   public mappingsControl: Map<string, string>;
   public mappingsShiftControl: Map<string, string>;
 
+  public focused: boolean;
+
   public mouseOver: boolean;
   public mouseDown: boolean;
   public mouseX: number;
@@ -28,6 +30,7 @@ export class Controller {
     this.element = element;
     this.onChange = (): void => {};
 
+    this.focused = false;
     this.mouseOver = false;
     this.mouseDown = false;
     this.mouseX = 0;
@@ -94,6 +97,9 @@ export class Controller {
 
     this.mappingsControl = new Map();
 
+    this.element.addEventListener("focusin", this.handleFocusEvent);
+    this.element.addEventListener("focusout", this.handleBlurEvent);
+
     this.element.addEventListener("keydown", this.handleKeyEvent);
     this.element.addEventListener("mouseover", this.handleMouseOverEvent);
     this.element.addEventListener("mouseout", this.handleMouseOutEvent);
@@ -104,7 +110,7 @@ export class Controller {
     this.element.addEventListener("wheel", this.handleWheelEvent);
 
     window.addEventListener("keyup", this.handleKeyEvent);
-    window.addEventListener("blur", this.handleBlurEvent);
+    window.addEventListener("blur", this.handleWindowBlurEvent);
   }
 
   private runOnChange(): void {
@@ -114,6 +120,18 @@ export class Controller {
 
     this.onChange();
   }
+
+  private handleFocusEvent = (event: FocusEvent): void => {
+    this.focused = true;
+
+    this.runOnChange();
+  };
+
+  private handleBlurEvent = (event: FocusEvent): void => {
+    this.focused = false;
+
+    this.runOnChange();
+  };
 
   private handleKeyEvent = (event: KeyboardEvent): void => {
     // find mappings
@@ -196,7 +214,8 @@ export class Controller {
     this.runOnChange();
   };
 
-  private handleBlurEvent = (event: FocusEvent): void => {
+  private handleWindowBlurEvent = (event: FocusEvent): void => {
+    this.focused = false;
     this.mouseOver = false;
     this.activeKeys.length = 0;
     this.activeActions.length = 0;
@@ -229,6 +248,7 @@ export class Controller {
 
   public getState = (): object => {
     return {
+      focused: this.focused,
       mouseOver: this.mouseOver,
       mouseDown: this.mouseDown,
       mouseX: this.mouseX,
