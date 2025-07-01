@@ -2,18 +2,23 @@ import {
   BrowserInterface,
   TestCanvasRenderingContext2D,
 } from "@/browser-interface";
+import { AssetLoader } from "@/2d/rendering/asset-loader";
 import { Viewport } from "@/2d/rendering/types";
 import { Layer } from "@/2d/rendering/layer";
 import { Controller } from "@/controller";
 
 export class App {
   public rootElement: HTMLElement;
-  public browserInterface: BrowserInterface;
-  public controller: Controller;
-  public viewport: Viewport;
-  public appElement: HTMLDivElement;
   public canvasElement: HTMLCanvasElement;
+  public appElement: HTMLDivElement;
+  public assetLoaderElement: HTMLElement;
+
+  public browserInterface: BrowserInterface;
+  public assetLoader: AssetLoader;
+  public controller: Controller;
+
   public ctx: CanvasRenderingContext2D | TestCanvasRenderingContext2D;
+  public viewport: Viewport;
   public layers: Array<Layer>;
   public running: boolean;
   public fps: number;
@@ -58,6 +63,7 @@ export class App {
     rootElement.innerHTML = `
       <div class="app app-2d">
         <canvas tabindex=0></canvas>
+        <div class="assets" style="display: none"></div>
       </div>
     `;
 
@@ -69,9 +75,19 @@ export class App {
       "canvas",
     ) as HTMLCanvasElement;
 
+    this.assetLoaderElement = this.rootElement.querySelector(
+      ".assets",
+    ) as HTMLElement;
+
+    // setup canvas
     this.canvasElement.style.outline = "0";
 
     this.ctx = this.browserInterface.get2dContext(this.canvasElement);
+
+    // setup asset loader
+    this.assetLoader = new AssetLoader({
+      rootElement: this.assetLoaderElement,
+    });
 
     // setup layers
     this.layers = [];
