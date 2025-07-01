@@ -1,8 +1,8 @@
 import { TestBrowserInterface } from "@/browser-interface";
 import { parseCSSValue, CSSValue } from "@/css";
-import { Viewport } from "@/rendering/2d/types";
-import { Layer } from "@/rendering/2d/layer";
-import { App } from "@/rendering/2d/app";
+import { Viewport } from "@/2d/rendering/types";
+import { Layer } from "@/2d/rendering/layer";
+import { App } from "@/2d/rendering/app";
 
 test("CSS Value Parsing", () => {
   let cssValue: CSSValue;
@@ -138,7 +138,7 @@ test("Viewport Calculations", () => {
 
   app.layerAdd(layer);
 
-  // if nothing is set, the layer should be streched to full width and height
+  // if nothing is set, the layer should be stretched to full width and height
   layer.height = "";
   layer.width = "";
   layer.top = "";
