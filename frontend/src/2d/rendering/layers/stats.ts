@@ -1,6 +1,8 @@
 import { Layer } from "@/2d/rendering/layer";
 
 export class StatsLayer extends Layer {
+  public handleInput: boolean = false;
+
   // text
   public defaultGutter: number = 8;
   public textColor: string = "yellow";

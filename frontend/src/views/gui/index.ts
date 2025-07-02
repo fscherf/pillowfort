@@ -61,6 +61,10 @@ function createMainApp(rootElement: HTMLElement) {
   miniMapLayer.callback = (layer: Layer, timeDelta: number) => {
     layer.app.ctx.fillStyle = "green";
 
+    if (layer.app.controller.hoveredLayer == layer) {
+      layer.app.ctx.fillStyle = "red";
+    }
+
     layer.app.ctx.fillRect(
       layer.viewport.x,
       layer.viewport.y,
@@ -103,6 +107,10 @@ function createMainApp(rootElement: HTMLElement) {
       this.app.ctx.rotate((this.rotation * Math.PI) / 180);
 
       this.app.ctx.fillStyle = "cyan";
+
+      if (this.app.controller.hoveredLayer == this) {
+        this.app.ctx.fillStyle = "red";
+      }
 
       this.app.ctx.fillRect((width / 2) * -1, (height / 2) * -1, width, height);
 
@@ -212,6 +220,7 @@ window.addEventListener("load", () => {
 
     table.addAttribute("focused", "Focused");
     table.addAttribute("mouseOver", "Mouse Over");
+    table.addAttribute("hoveredLayer", "Hovered Layer");
     table.addAttribute("mouseX", "Mouse X");
     table.addAttribute("mouseY", "Mouse Y");
 

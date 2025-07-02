@@ -1,6 +1,8 @@
 import { Layer } from "@/2d/rendering/layer";
 
 export class SolidColorBackgroundLayer extends Layer {
+  public handleInput: boolean = false;
+
   public color: string = "#000000";
 
   render(timeDelta: number): void {

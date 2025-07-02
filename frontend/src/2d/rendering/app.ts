@@ -19,10 +19,14 @@ export class App {
 
   public ctx: CanvasRenderingContext2D | TestCanvasRenderingContext2D;
   public viewport: Viewport;
-  public layers: Array<Layer>;
   public running: boolean;
   public fps: number;
   public tps: number;
+
+  // layers
+  public layers: Array<Layer>;
+  public layersSortedByZIndex: Array<Layer>;
+  public layersByName: Map<string, Layer>;
 
   // configuration
   public accumulatorMaxInMs: number = 250;
@@ -31,10 +35,6 @@ export class App {
   public height: number = 600;
 
   private _tpsMax: number;
-
-  // layers
-  private layersSortedByZIndex: Array<Layer>;
-  private layersByName: Map<string, Layer>;
 
   // loop
   private lastTimestamp: number;
@@ -106,7 +106,7 @@ export class App {
 
     // setup controller
     this.controller = new Controller({
-      element: this.appElement,
+      app: this,
     });
 
     // finish

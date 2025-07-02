@@ -1,7 +1,10 @@
+import { Layer } from "@/2d/rendering/layer";
+import { App } from "@/2d/rendering/app";
+
 type Timer = ReturnType<typeof setTimeout>;
 
 export class Controller {
-  public element: HTMLElement;
+  public app: App;
   public mappingsNormal: Map<string, string>;
   public mappingsShift: Map<string, string>;
   public mappingsControl: Map<string, string>;
@@ -22,12 +25,14 @@ export class Controller {
   public activeKeys: Array<string>;
   public activeActions: Array<string>;
 
+  public hoveredLayer: Layer | null = null;
+
   public onChange: () => void;
 
   private wheelEventTimer: Timer;
 
-  constructor({ element }: { element: HTMLElement }) {
-    this.element = element;
+  constructor({ app }: { app: App }) {
+    this.app = app;
     this.onChange = (): void => {};
 
     this.focused = false;
@@ -97,20 +102,58 @@ export class Controller {
 
     this.mappingsControl = new Map();
 
-    this.element.addEventListener("focusin", this.handleFocusEvent);
-    this.element.addEventListener("focusout", this.handleBlurEvent);
+    this.app.appElement.addEventListener("focusin", this.handleFocusEvent);
+    this.app.appElement.addEventListener("focusout", this.handleBlurEvent);
 
-    this.element.addEventListener("keydown", this.handleKeyEvent);
-    this.element.addEventListener("mouseover", this.handleMouseOverEvent);
-    this.element.addEventListener("mouseout", this.handleMouseOutEvent);
-    this.element.addEventListener("mousemove", this.handleMouseMoveEvent);
-    this.element.addEventListener("mouseup", this.handleMouseUpEvent);
-    this.element.addEventListener("mousedown", this.handleMouseDownEvent);
-    this.element.addEventListener("keyup", this.handleKeyEvent);
-    this.element.addEventListener("wheel", this.handleWheelEvent);
+    this.app.appElement.addEventListener("keydown", this.handleKeyEvent);
+    this.app.appElement.addEventListener(
+      "mouseover",
+      this.handleMouseOverEvent,
+    );
+    this.app.appElement.addEventListener("mouseout", this.handleMouseOutEvent);
+    this.app.appElement.addEventListener(
+      "mousemove",
+      this.handleMouseMoveEvent,
+    );
+    this.app.appElement.addEventListener("mouseup", this.handleMouseUpEvent);
+    this.app.appElement.addEventListener(
+      "mousedown",
+      this.handleMouseDownEvent,
+    );
+    this.app.appElement.addEventListener("keyup", this.handleKeyEvent);
+    this.app.appElement.addEventListener("wheel", this.handleWheelEvent);
 
     window.addEventListener("keyup", this.handleKeyEvent);
     window.addEventListener("blur", this.handleWindowBlurEvent);
+  }
+
+  private updateHoveredLayer(): void {
+    if (!this.mouseOver) {
+      this.hoveredLayer = null;
+
+      return;
+    }
+
+    for (
+      let index = this.app.layersSortedByZIndex.length - 1;
+      index >= 0;
+      index--
+    ) {
+      const layer: Layer = this.app.layersSortedByZIndex[index];
+
+      if (
+        layer.visible &&
+        layer.handleInput &&
+        this.mouseX >= layer.viewport.left &&
+        this.mouseX <= layer.viewport.right &&
+        this.mouseY >= layer.viewport.top &&
+        this.mouseY <= layer.viewport.bottom
+      ) {
+        this.hoveredLayer = layer;
+
+        break;
+      }
+    }
   }
 
   private runOnChange(): void {
@@ -124,12 +167,14 @@ export class Controller {
   private handleFocusEvent = (event: FocusEvent): void => {
     this.focused = true;
 
+    this.updateHoveredLayer();
     this.runOnChange();
   };
 
   private handleBlurEvent = (event: FocusEvent): void => {
     this.focused = false;
 
+    this.updateHoveredLayer();
     this.runOnChange();
   };
 
@@ -180,17 +225,19 @@ export class Controller {
   private handleMouseOverEvent = (event: MouseEvent): void => {
     this.mouseOver = true;
 
+    this.updateHoveredLayer();
     this.runOnChange();
   };
 
   private handleMouseOutEvent = (event: MouseEvent): void => {
     this.mouseOver = false;
 
+    this.updateHoveredLayer();
     this.runOnChange();
   };
 
   private handleMouseDownEvent = (event: MouseEvent): void => {
-    const rect = this.element.getBoundingClientRect();
+    const rect = this.app.appElement.getBoundingClientRect();
 
     this.mouseDown = true;
     this.mouseDownX = event.clientX - rect.left;
@@ -206,11 +253,12 @@ export class Controller {
   };
 
   private handleMouseMoveEvent = (event: MouseEvent): void => {
-    const rect = this.element.getBoundingClientRect();
+    const rect = this.app.appElement.getBoundingClientRect();
 
     this.mouseX = event.clientX - rect.left;
     this.mouseY = event.clientY - rect.top;
 
+    this.updateHoveredLayer();
     this.runOnChange();
   };
 
@@ -220,6 +268,7 @@ export class Controller {
     this.activeKeys.length = 0;
     this.activeActions.length = 0;
 
+    this.updateHoveredLayer();
     this.runOnChange();
   };
 
@@ -247,6 +296,12 @@ export class Controller {
   };
 
   public getState = (): object => {
+    let hoveredLayerName: string = "";
+
+    if (this.hoveredLayer) {
+      hoveredLayerName = this.hoveredLayer.name;
+    }
+
     return {
       focused: this.focused,
       mouseOver: this.mouseOver,
@@ -259,6 +314,7 @@ export class Controller {
       wheelDeltaY: this.wheelDeltaY,
       activeKeys: this.activeKeys,
       activeActions: this.activeActions,
+      hoveredLayer: hoveredLayerName,
     };
   };
 }

@@ -8,6 +8,7 @@ export class Layer {
 
   // configuration
   public visible: boolean = true;
+  public handleInput: boolean = true;
 
   // meta data
   public name: string = "";
