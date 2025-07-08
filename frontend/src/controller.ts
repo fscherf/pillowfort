@@ -13,11 +13,16 @@ export class Controller {
   public focused: boolean;
 
   public mouseOver: boolean;
-  public mouseDown: boolean;
   public mouseX: number;
   public mouseY: number;
-  public mouseDownX: number;
-  public mouseDownY: number;
+
+  public mouseDownLeft: boolean;
+  public mouseDownLeftX: number;
+  public mouseDownLeftY: number;
+
+  public mouseDownRight: boolean;
+  public mouseDownRightX: number;
+  public mouseDownRightY: number;
 
   public wheelDeltaX: number;
   public wheelDeltaY: number;
@@ -37,11 +42,16 @@ export class Controller {
 
     this.focused = false;
     this.mouseOver = false;
-    this.mouseDown = false;
     this.mouseX = 0;
     this.mouseY = 0;
-    this.mouseDownX = 0;
-    this.mouseDownY = 0;
+
+    this.mouseDownLeft = false;
+    this.mouseDownLeftX = 0;
+    this.mouseDownLeftY = 0;
+
+    this.mouseDownRight = false;
+    this.mouseDownRightX = 0;
+    this.mouseDownRightY = 0;
 
     this.wheelDeltaX = 0;
     this.wheelDeltaY = 0;
@@ -125,6 +135,12 @@ export class Controller {
 
     window.addEventListener("keyup", this.handleKeyEvent);
     window.addEventListener("blur", this.handleWindowBlurEvent);
+
+    // disable the browsers context menu
+    this.app.appElement.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
   }
 
   private updateHoveredLayer(): void {
@@ -239,15 +255,29 @@ export class Controller {
   private handleMouseDownEvent = (event: MouseEvent): void => {
     const rect = this.app.appElement.getBoundingClientRect();
 
-    this.mouseDown = true;
-    this.mouseDownX = event.clientX - rect.left;
-    this.mouseDownY = event.clientY - rect.top;
+    if (event.button == 0) {
+      // left
+      this.mouseDownLeft = true;
+      this.mouseDownLeftX = event.clientX - rect.left;
+      this.mouseDownLeftY = event.clientY - rect.top;
+    } else if (event.button == 2) {
+      // right
+      this.mouseDownRight = true;
+      this.mouseDownRightX = event.clientX - rect.left;
+      this.mouseDownRightY = event.clientY - rect.top;
+    }
 
     this.runOnChange();
   };
 
-  private handleMouseUpEvent = (): void => {
-    this.mouseDown = false;
+  private handleMouseUpEvent = (event: MouseEvent): void => {
+    if (event.button == 0) {
+      // left
+      this.mouseDownLeft = false;
+    } else if (event.button == 2) {
+      // right
+      this.mouseDownRight = false;
+    }
 
     this.runOnChange();
   };
@@ -305,11 +335,14 @@ export class Controller {
     return {
       focused: this.focused,
       mouseOver: this.mouseOver,
-      mouseDown: this.mouseDown,
       mouseX: this.mouseX,
       mouseY: this.mouseY,
-      mouseDownX: this.mouseDownX,
-      mouseDownY: this.mouseDownY,
+      mouseDownLeft: this.mouseDownLeft,
+      mouseDownLeftX: this.mouseDownLeftX,
+      mouseDownLeftY: this.mouseDownLeftY,
+      mouseDownRight: this.mouseDownRight,
+      mouseDownRightX: this.mouseDownRightX,
+      mouseDownRightY: this.mouseDownRightY,
       wheelDeltaX: this.wheelDeltaX,
       wheelDeltaY: this.wheelDeltaY,
       activeKeys: this.activeKeys,

@@ -224,9 +224,13 @@ window.addEventListener("load", () => {
     table.addAttribute("mouseX", "Mouse X");
     table.addAttribute("mouseY", "Mouse Y");
 
-    table.addAttribute("mouseDown", "Mouse Down");
-    table.addAttribute("mouseDownX", "Mouse Down x");
-    table.addAttribute("mouseDownY", "Mouse Down Y");
+    table.addAttribute("mouseDownLeft", "Mouse Down Left");
+    table.addAttribute("mouseDownLeftX", "Mouse Down Left X");
+    table.addAttribute("mouseDownLeftY", "Mouse Down Left Y");
+
+    table.addAttribute("mouseDownRight", "Mouse Down Right");
+    table.addAttribute("mouseDownRightX", "Mouse Down Right X");
+    table.addAttribute("mouseDownRightY", "Mouse Down Right Y");
 
     table.addAttribute("wheelDeltaX", "Wheel Delta X");
     table.addAttribute("wheelDeltaY", "Wheel Delta Y");
