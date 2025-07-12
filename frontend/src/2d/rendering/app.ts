@@ -84,6 +84,8 @@ export class App {
 
     this.ctx = this.browserInterface.get2dContext(this.canvasElement);
 
+    this.ctx.imageSmoothingEnabled = false;
+
     // setup asset loader
     this.assetLoader = new AssetLoader({
       rootElement: this.assetLoaderElement,
