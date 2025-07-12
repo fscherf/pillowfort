@@ -157,7 +157,15 @@ export class App {
         continue;
       }
 
-      layer.render(timeDelta);
+      this.ctx.save();
+
+      this.ctx.translate(layer.viewport.x, layer.viewport.y);
+
+      try {
+        layer.render(timeDelta);
+      } finally {
+        this.ctx.restore();
+      }
     }
 
     this.frameCount += 1;

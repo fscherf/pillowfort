@@ -35,6 +35,8 @@ export class TestCanvasRenderingContext2D {
   public textAlign: string = "";
   public textBaseline: string = "";
 
+  public save(): void {}
+  public restore(): void {}
   public fillRect(): void {}
   public fillText(): void {}
   public rotate(): void {}
