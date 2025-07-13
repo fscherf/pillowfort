@@ -25,6 +25,7 @@ docker compose exec postgres createdb --username $POSTGRES_USER $POSTGRES_DB
 docker compose run -it -e USER=admin backend /bin/bash -c "
     ./manage.py migrate
     ./manage.py createsuperuser
+    ./manage.py pillowfort_bootstrap
 "
 
 # finish

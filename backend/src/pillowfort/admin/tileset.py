@@ -1,3 +1,5 @@
+import io
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
@@ -7,22 +9,25 @@ from django.contrib import admin
 from django.urls import reverse
 from django.urls import path
 
-from pillowfort.models import Asset
+from PIL import Image, ImageDraw
+
+from pillowfort.models import Tileset
 
 
-@admin.register(Asset)
-class AssetAdmin(admin.ModelAdmin):
+@admin.register(Tileset)
+class TilesetAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'space_link',
-        'generated',
+        'asset_link',
+        'grid',
         'added',
         'modified',
     )
 
     list_filter = (
         'space',
-        'generated',
+        'asset',
         'added',
         'modified',
     )
@@ -30,6 +35,7 @@ class AssetAdmin(admin.ModelAdmin):
     search_fields = (
         'name',
         'space__url',
+        'asset__name',
     )
 
     fieldsets = (
@@ -41,8 +47,10 @@ class AssetAdmin(admin.ModelAdmin):
         ('Config', {
             'fields': (
                 'space',
+                'asset',
                 'name',
-                'file',
+                'width',
+                'height',
                 'config',
             ),
         }),
@@ -50,7 +58,6 @@ class AssetAdmin(admin.ModelAdmin):
             'fields': (
                 'added',
                 'modified',
-                'generated',
                 'comment',
             ),
         }),
@@ -60,7 +67,6 @@ class AssetAdmin(admin.ModelAdmin):
         'preview',
         'added',
         'modified',
-        'generated',
     )
 
     # list display
@@ -74,9 +80,24 @@ class AssetAdmin(admin.ModelAdmin):
             f'<a href="{admin_url}">{obj.space.url}</a>',
         )
 
-    space_link.short_description = 'Space'
+    def asset_link(self, obj):
+        admin_url = reverse(
+            'admin:pillowfort_asset_change',
+            args=[obj.asset.pk],
+        )
 
-    # viewsets
+        return format_html(
+            f'<a href="{admin_url}">{obj.asset.name}</a>',
+        )
+
+    def grid(self, obj):
+        return f'{obj.width}x{obj.height}'
+
+    space_link.short_description = 'Space'
+    asset_link.short_description = 'Asset'
+    grid.short_description = 'Grid'
+
+    # fieldsets
     def preview(self, obj):
         if not obj.pk:
             return "Not available"
@@ -93,7 +114,7 @@ class AssetAdmin(admin.ModelAdmin):
             path(
                 '<int:pk>/preview/',
                 self.admin_site.admin_view(self.preview_view),
-                name='admin__asset__preview'
+                name='admin__tileset__preview'
             ),
             *super().get_urls()
         ]
@@ -102,12 +123,27 @@ class AssetAdmin(admin.ModelAdmin):
     @method_decorator(never_cache)
     def preview_view(self, request, pk, *args, **kwargs):
         try:
-            asset = Asset.objects.get(pk=pk)
+            tileset = Tileset.objects.get(pk=pk)
 
-            with asset.file.open('rb') as f:
-                data = f.read()
+            with tileset.asset.file.open('rb') as f:
+                image = Image.open(f).convert('RGBA')
 
-            return HttpResponse(data, content_type='image/png')
+            draw = ImageDraw.Draw(image)
 
-        except Asset.DoesNotExist:
-            raise Http404('Asset not found')
+            width, height = image.size
+
+            for x in range(0, width, tileset.width):
+                draw.line([(x, 0), (x, height)], fill='red', width=1)
+
+            for y in range(0, height, tileset.height):
+                draw.line([(0, y), (width, y)], fill='red', width=1)
+
+            buffer = io.BytesIO()
+
+            image.save(buffer, format='PNG')
+            buffer.seek(0)
+
+            return HttpResponse(buffer, content_type='image/png')
+
+        except Tileset.DoesNotExist:
+            raise Http404('Tileset not found')
