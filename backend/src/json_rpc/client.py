@@ -20,7 +20,11 @@ class JsonRpcClient:
         from django.contrib.auth.models import User, AnonymousUser
         from django.contrib.sessions.models import Session
 
+        from pillowfort.models import Account
+
         self.user = AnonymousUser()
+        self.account = None
+
         session_key = self.http_request.cookies.get('sessionid', '')
 
         if session_key:
@@ -35,6 +39,15 @@ class JsonRpcClient:
                     pass
 
             except Session.DoesNotExist:
+                pass
+
+        if not self.user.is_anonymous:
+            try:
+                self.account = Account.objects.get(
+                    user=self.user,
+                )
+
+            except Account.DoesNotExist:
                 pass
 
     def send_string(self, string):
