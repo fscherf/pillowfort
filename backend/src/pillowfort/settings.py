@@ -23,6 +23,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pillowfort.middlewares.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'pillowfort.urls'
