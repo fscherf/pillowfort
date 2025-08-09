@@ -135,7 +135,6 @@ export class Camera extends Layer {
 
   public tick(timeDelta: number): void {
     // TODO: does not work correctly if mouse gets out of bounds while dragging
-    // TODO: zoom into specific sectors does not work
 
     if (this.engine.controller.hoveredLayer != this) {
       return;
@@ -143,10 +142,20 @@ export class Camera extends Layer {
 
     // zoom
     if (this.engine.controller.wheelDeltaY != 0) {
-      this.zoom = Math.max(
-        this.zoom + (this.engine.controller.wheelDeltaY / 1000) * -1,
-        0.25,
-      );
+      const oldZoom = this.zoom;
+      const zoomChange = (this.engine.controller.wheelDeltaY / 1000) * -1;
+      const newZoom = Math.max(oldZoom + zoomChange, 0.25);
+      const zoomFactor = newZoom / oldZoom;
+
+      this.zoom = newZoom;
+
+      this.offsetX =
+        this.engine.controller.mouseX -
+        (this.engine.controller.mouseX - this.offsetX) * zoomFactor;
+
+      this.offsetY =
+        this.engine.controller.mouseY -
+        (this.engine.controller.mouseY - this.offsetY) * zoomFactor;
     }
 
     // drag (mouse left)
