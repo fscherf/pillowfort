@@ -1,8 +1,8 @@
-import { TestBrowserInterface } from "@/browser-interface";
-import { parseCSSValue, CSSValue } from "@/css";
-import { Viewport } from "@/2d/rendering/types";
-import { Layer } from "@/2d/rendering/layer";
-import { App } from "@/2d/rendering/app";
+import { TestBrowserInterface } from "@/engine/browser-interface";
+import { parseCSSValue, CSSValue } from "@/engine/css";
+import { Viewport } from "@/engine/types";
+import { Layer } from "@/engine/layer";
+import { Engine } from "@/engine";
 
 test("CSS Value Parsing", () => {
   let cssValue: CSSValue;
@@ -112,8 +112,8 @@ test("Viewport Calculations", () => {
     <div id="main"></div>
   `;
 
-  // setup app
-  const appViewport: Viewport = {
+  // setup engine
+  const engineViewport: Viewport = {
     x: 0,
     y: 0,
     width: 800,
@@ -126,17 +126,17 @@ test("Viewport Calculations", () => {
 
   const testBrowserInterface: TestBrowserInterface = new TestBrowserInterface();
 
-  const app: App = new App({
+  const engine: Engine = new Engine({
     browserInterface: testBrowserInterface,
     rootElement: document.querySelector("#main"),
   });
 
-  testBrowserInterface.viewport = appViewport;
+  testBrowserInterface.viewport = engineViewport;
 
   // setup layer
   const layer: Layer = new Layer();
 
-  app.layerAdd(layer);
+  engine.layerAdd(layer);
 
   // if nothing is set, the layer should be stretched to full width and height
   layer.height = "";
@@ -146,7 +146,7 @@ test("Viewport Calculations", () => {
   layer.bottom = "";
   layer.left = "";
 
-  app.resize(800, 600);
+  engine.resize(800, 600);
 
   expect(layer.viewport).toStrictEqual({
     x: 0,
@@ -167,7 +167,7 @@ test("Viewport Calculations", () => {
   layer.bottom = "";
   layer.left = "";
 
-  app.resize(800, 600);
+  engine.resize(800, 600);
 
   expect(layer.viewport).toStrictEqual({
     x: 0,
@@ -188,7 +188,7 @@ test("Viewport Calculations", () => {
   layer.bottom = "";
   layer.left = "";
 
-  app.resize(800, 600);
+  engine.resize(800, 600);
 
   expect(layer.viewport).toStrictEqual({
     x: 0,
@@ -209,7 +209,7 @@ test("Viewport Calculations", () => {
   layer.bottom = "40px";
   layer.left = "20px";
 
-  app.resize(800, 600);
+  engine.resize(800, 600);
 
   expect(layer.viewport).toStrictEqual({
     x: 20,
@@ -230,7 +230,7 @@ test("Viewport Calculations", () => {
   layer.bottom = "";
   layer.left = "10px";
 
-  app.resize(800, 600);
+  engine.resize(800, 600);
 
   expect(layer.viewport).toStrictEqual({
     x: 10,
@@ -251,7 +251,7 @@ test("Viewport Calculations", () => {
   layer.bottom = "10px";
   layer.left = "";
 
-  app.resize(800, 600);
+  engine.resize(800, 600);
 
   expect(layer.viewport).toStrictEqual({
     x: 690,
@@ -273,7 +273,7 @@ test("Viewport Calculations", () => {
   layer.bottom = "";
   layer.left = "10px";
 
-  app.resize(800, 600);
+  engine.resize(800, 600);
 
   expect(layer.viewport).toStrictEqual({
     x: 10,
@@ -295,7 +295,7 @@ test("Viewport Calculations", () => {
   layer.bottom = "10px";
   layer.left = "";
 
-  app.resize(800, 600);
+  engine.resize(800, 600);
 
   expect(layer.viewport).toStrictEqual({
     x: 0,

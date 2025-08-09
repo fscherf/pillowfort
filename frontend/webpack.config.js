@@ -1,32 +1,29 @@
-const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
+const path = require("path");
 
 module.exports = {
-  mode: "production",
+  mode: "development",
   entry: {
-    "game": "./src/views/game/index.ts",
-    "gui": "./src/views/gui/index.ts",
-    "json-rpc-client": "./src/views/json-rpc/client.ts",
-  },
-  devtool: "inline-source-map",
-  module: {
-    rules: [
-      {
-        test: /\.ts?$/,
-        use: "ts-loader",
-        exclude: /node_modules/,
-      },
-    ],
-  },
-  resolve: {
-    extensions: [".ts"],
-    alias: {
-      "@": path.resolve(__dirname, "src"),
-    },
+    app: "./src/entry/app.tsx",
   },
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist"),
+  },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js"],
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+    ],
   },
   optimization: {
     minimize: true,

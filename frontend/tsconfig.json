@@ -1,21 +1,15 @@
 {
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.d.ts"
-  ],
   "compilerOptions": {
-    "outDir": "./dist/",
-    "noImplicitAny": true,
-    "module": "es6",
-    "target": "es5",
-    "allowJs": true,
+    "target": "ES6",
+    "module": "ESNext",
+    "jsx": "react-jsx",
     "moduleResolution": "node",
-    "lib": ["es2022", "dom"],
     "esModuleInterop": true,
-    "sourceMap": true,
-    "baseUrl": "./",
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
-  }
+  },
+  "include": ["./src"]
 }

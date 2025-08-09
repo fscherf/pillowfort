@@ -1,0 +1,55 @@
+html,
+body,
+#root,
+#app {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+/* app --------------------------------------------------------------------- */
+#app {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto 1200px auto;
+  grid-template-rows: 50px auto 50px;
+}
+
+/* game -------------------------------------------------------------------- */
+.game {
+  width: 100%;
+  height: 100%;
+
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 4;
+}
+
+.game .engine canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* overlay ----------------------------------------------------------------- */
+#overlay-background {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 4;
+
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#overlay {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+
+  background-color: white;
+  padding: 5px;
+}

@@ -4,6 +4,7 @@ import os
 from django.db.models.signals import pre_save, post_save
 from django.core.exceptions import ValidationError
 from django.db import transaction, models
+from django.shortcuts import reverse
 from django.dispatch import receiver
 
 from pillowfort.validators import validate_name
@@ -189,6 +190,12 @@ class Space(models.Model):
         self.url = os.path.join(*["/", *segments])
 
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse(
+            'frontend__index',
+            args=(self.url[1:],)
+        )
 
     def get_access(self, account):
         access = SimpleNamespace(
