@@ -73,6 +73,7 @@ export class Game {
     this.jsonRpcClient.connect();
     this.engine.start();
     this.loadMap();
+    this.mainCamera.center();
   }
 
   public loadMap(): void {

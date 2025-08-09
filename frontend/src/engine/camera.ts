@@ -123,6 +123,16 @@ export class Camera extends Layer {
     );
   }
 
+  public center(): void {
+    this.offsetX =
+      this.viewport.width / 2 -
+      (this.scene.tileWidth * this.scene.sceneWidth) / 2;
+
+    this.offsetY =
+      this.viewport.height / 2 -
+      (this.scene.tileHeight * this.scene.sceneHeight) / 2;
+  }
+
   public tick(timeDelta: number): void {
     // TODO: does not work correctly if mouse gets out of bounds while dragging
     // TODO: zoom into specific sectors does not work
