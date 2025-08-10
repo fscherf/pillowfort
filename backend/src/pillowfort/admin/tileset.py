@@ -1,3 +1,4 @@
+import math
 import io
 
 from django.contrib.admin.views.decorators import staff_member_required
@@ -9,7 +10,7 @@ from django.contrib import admin
 from django.urls import reverse
 from django.urls import path
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 from pillowfort.models import Tileset
 
@@ -104,9 +105,11 @@ class TilesetAdmin(admin.ModelAdmin):
         if not obj.__class__.objects.filter(uuid=obj.uuid).exists():
             return "Not available"
 
-        return format_html(
-            '<img src="../preview" style="max-width: 100%; height: auto; border: 1px solid #ccc;" />',
-        )
+        return format_html("""
+            <div style="width: 1000px; height: auto; overflow: auto; border: 1px solid #ccc;">
+                <img src="../preview" />
+            </div>
+        """)
 
     preview.short_description = "Preview"
 
@@ -134,12 +137,34 @@ class TilesetAdmin(admin.ModelAdmin):
 
             width, height = image.size
 
+            # draw grid
             for x in range(0, width, tileset.width):
                 draw.line([(x, 0), (x, height)], fill='red', width=1)
 
             for y in range(0, height, tileset.height):
                 draw.line([(0, y), (width, y)], fill='red', width=1)
 
+            # draw tile ids
+            font = ImageFont.load_default()
+            cols = math.ceil(width / tileset.width)
+            rows = math.ceil(height / tileset.height)
+            tile_id = 0
+
+            for row in range(rows):
+                for col in range(cols):
+                    x = col * tileset.width
+                    y = row * tileset.height
+
+                    draw.text(
+                        (x + 4, y + 2),
+                        str(tile_id),
+                        font=font,
+                        fill=(255, 0, 0),
+                    )
+
+                    tile_id += 1
+
+            # render to response
             buffer = io.BytesIO()
 
             image.save(buffer, format='PNG')
