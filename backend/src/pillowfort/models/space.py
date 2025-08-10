@@ -1,4 +1,5 @@
 from types import SimpleNamespace
+import uuid
 import os
 
 from django.db.models.signals import pre_save, post_save
@@ -102,6 +103,12 @@ class Space(models.Model):
     )
 
     # common fields
+    uuid = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+
     added = models.DateTimeField(
         verbose_name="Added",
         auto_now_add=True,

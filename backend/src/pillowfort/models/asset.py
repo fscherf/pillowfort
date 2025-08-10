@@ -1,25 +1,13 @@
 import uuid
 import os
 
-from django.conf import settings
 from django.db import models
 
 from pillowfort.validators import validate_name, validate_png
 
 
 def upload_to(instance, filename):
-    ATTEMPTS = 10
-
-    for _ in range(ATTEMPTS):
-        rel_dir_path = f'assets/{uuid.uuid4().hex}'
-        abs_dir_path = os.path.join(settings.MEDIA_ROOT, rel_dir_path)
-
-        if not os.path.isdir(abs_dir_path):
-            return f'{rel_dir_path}/{filename}'
-
-    raise RuntimeError(
-        f'failed to generate a unique upload path after {ATTEMPTS} attempts',
-    )
+    return f'assets/{instance.uuid}/{filename}'
 
 
 class AssetQuerySet(models.QuerySet):
@@ -55,6 +43,12 @@ class Asset(models.Model):
     )
 
     # common fields
+    uuid = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+
     added = models.DateTimeField(
         verbose_name='Added',
         auto_now_add=True,

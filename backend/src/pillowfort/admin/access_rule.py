@@ -52,6 +52,7 @@ class AccessRuleAdmin(admin.ModelAdmin):
         }),
         ('Meta Data', {
             'fields': (
+                'uuid',
                 'added',
                 'modified',
                 'comment',
@@ -60,6 +61,7 @@ class AccessRuleAdmin(admin.ModelAdmin):
     )
 
     readonly_fields = (
+        'uuid',
         'added',
         'modified',
     )

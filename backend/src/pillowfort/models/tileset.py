@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 from pillowfort.validators import validate_name
@@ -28,6 +30,12 @@ class Tileset(models.Model):
     height = models.PositiveSmallIntegerField()
 
     # common fields
+    uuid = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+
     added = models.DateTimeField(
         verbose_name='Added',
         auto_now_add=True,

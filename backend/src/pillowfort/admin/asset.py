@@ -48,6 +48,7 @@ class AssetAdmin(admin.ModelAdmin):
         }),
         ('Meta Data', {
             'fields': (
+                'uuid',
                 'added',
                 'modified',
                 'generated',
@@ -58,6 +59,7 @@ class AssetAdmin(admin.ModelAdmin):
 
     readonly_fields = (
         'preview',
+        'uuid',
         'added',
         'modified',
         'generated',
@@ -78,7 +80,7 @@ class AssetAdmin(admin.ModelAdmin):
 
     # viewsets
     def preview(self, obj):
-        if not obj.pk:
+        if not obj.__class__.objects.filter(uuid=obj.uuid).exists():
             return "Not available"
 
         return format_html(
@@ -91,7 +93,7 @@ class AssetAdmin(admin.ModelAdmin):
     def get_urls(self):
         return [
             path(
-                '<int:pk>/preview/',
+                '<uuid:pk>/preview/',
                 self.admin_site.admin_view(self.preview_view),
                 name='admin__asset__preview'
             ),

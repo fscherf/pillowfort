@@ -41,6 +41,7 @@ class SpaceAdmin(admin.ModelAdmin):
         }),
         ('Meta Data', {
             'fields': (
+                'uuid',
                 'added',
                 'modified',
                 'url',
@@ -50,6 +51,7 @@ class SpaceAdmin(admin.ModelAdmin):
     )
 
     readonly_fields = (
+        'uuid',
         'added',
         'modified',
         'url',

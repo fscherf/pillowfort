@@ -39,6 +39,7 @@ class AccountAdmin(admin.ModelAdmin):
         }),
         ('Meta Data', {
             'fields': (
+                'uuid',
                 'added',
                 'modified',
                 'comment',
@@ -47,6 +48,7 @@ class AccountAdmin(admin.ModelAdmin):
     )
 
     readonly_fields = (
+        'uuid',
         'added',
         'modified',
     )

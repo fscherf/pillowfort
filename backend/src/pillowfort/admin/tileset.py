@@ -56,6 +56,7 @@ class TilesetAdmin(admin.ModelAdmin):
         }),
         ('Meta Data', {
             'fields': (
+                'uuid',
                 'added',
                 'modified',
                 'comment',
@@ -65,6 +66,7 @@ class TilesetAdmin(admin.ModelAdmin):
 
     readonly_fields = (
         'preview',
+        'uuid',
         'added',
         'modified',
     )
@@ -99,7 +101,7 @@ class TilesetAdmin(admin.ModelAdmin):
 
     # fieldsets
     def preview(self, obj):
-        if not obj.pk:
+        if not obj.__class__.objects.filter(uuid=obj.uuid).exists():
             return "Not available"
 
         return format_html(
@@ -112,7 +114,7 @@ class TilesetAdmin(admin.ModelAdmin):
     def get_urls(self):
         return [
             path(
-                '<int:pk>/preview/',
+                '<uuid:pk>/preview/',
                 self.admin_site.admin_view(self.preview_view),
                 name='admin__tileset__preview'
             ),
