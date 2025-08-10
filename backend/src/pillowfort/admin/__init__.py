@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .access_rule import AccessRuleAdmin  # NOQA
+from .blueprint import BlueprintAdmin  # NOQA
 from .account import AccountAdmin  # NOQA
 from .tileset import TilesetAdmin  # NOQA
 from .asset import AssetAdmin  # NOQA

@@ -162,6 +162,15 @@ class Space(models.Model):
 
             current = current.parent
 
+    @property
+    def blueprints_all(self):
+        current = self
+
+        while current:
+            yield from current.blueprints.all()
+
+            current = current.parent
+
     def __str__(self):
         return self.url
 
