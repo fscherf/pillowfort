@@ -26,6 +26,7 @@ class SpaceAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Config', {
             'fields': (
+                'parent',
                 'name',
                 'verbose_name',
                 'is_public',
