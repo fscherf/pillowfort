@@ -14,8 +14,19 @@ from pillowfort.models import AccessRule
 
 class SpaceQuerySet(models.QuerySet):
     def get_by_url(self, url):
+        """
+        supported formats:
+
+         - /s/foo/bar/baz/
+         - /s/foo/bar/baz
+         - foo/bar/baz
+        """
+
         if url != "/" and url.endswith("/"):
             url = url[:-1]
+
+        if url.startswith("/s/"):
+            url = url[2:]
 
         try:
             return Space.objects.get(url=url)
@@ -30,6 +41,9 @@ class SpaceQuerySet(models.QuerySet):
 
             if url.endswith("/"):
                 url = url[:-1]
+
+            if url.startswith("s/"):
+                url = url[2:]
 
         names = [
             i.strip() for i in url.split("/") if i.strip()
