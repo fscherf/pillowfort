@@ -258,6 +258,99 @@ class Space(models.Model):
 
         return access
 
+    def get_map_data(self):
+        map_data = {
+            "assets": {},
+            "tilesets": {},
+            "blueprints": {},
+            "mapData": self.map_data,
+        }
+
+        # extract tilesets, assets, and blueprints from map data
+        for layer in map_data["mapData"]["layers"]:
+            if layer["type"] == "tiles":
+                for _, tileset_uuid in layer["data"]:
+                    map_data["tileset_uuid"][tileset_uuid] = None
+
+            elif layer["type"] == "image":
+                for _, asset_uuid in layer["data"]:
+                    map_data["assets"][asset_uuid] = None
+
+            elif layer["type"] == "blueprint":
+                for _, blueprint_uuid in layer["data"]:
+                    map_data["blueprints"][blueprint_uuid] = None
+
+        # extract blueprints from map entities
+        for entity in self.map_data["entities"]:
+            map_data["blueprints"][entity["blueprint"]] = None
+
+        # resolve blueprint UUIDs
+        for blueprint in self.blueprints_all:
+            uuid_string = str(blueprint.uuid)
+
+            if uuid_string not in map_data["blueprints"]:
+                continue
+
+            map_data["blueprints"][uuid_string] = blueprint.data
+
+        for blueprint_uuid, blueprint in map_data["blueprints"].items():
+            if blueprint is None:
+                raise ValueError(
+                    f"blueprint with UUID {blueprint_uuid} is not available",
+                )
+
+        # extract tilesets from blueprints
+        for blueprint in map_data["blueprints"].values():
+            for animation in blueprint["animations"].values():
+                for frame in animation["frames"]:
+                    for layer in frame["layers"]:
+                        if layer["type"] != "tiles":
+                            continue
+
+                        for _, tileset_uuid, _ in layer["data"]:
+                            map_data["tilesets"][tileset_uuid] = None
+
+        # resolve tileset UUIDs
+        for tileset in self.tilesets_all:
+            tileset_uuid_string = str(tileset.uuid)
+
+            if tileset_uuid_string not in map_data["tilesets"]:
+                continue
+
+            map_data["tilesets"][tileset_uuid_string] = {
+                "tileWidth": tileset.width,
+                "tileHeight": tileset.height,
+                "asset": str(tileset.asset.uuid),
+            }
+
+        for tileset_uuid, tileset in map_data["tilesets"].items():
+            if tileset is None:
+                raise ValueError(
+                    f"tileset with UUID {tileset_uuid} is not available",
+                )
+
+        # extract assets from tilesets
+        for tileset in map_data["tilesets"].values():
+            map_data["assets"][tileset["asset"]] = None
+
+        # resolve asset UUIDs
+        for asset in self.assets_all:
+            asset_uuid = str(asset.uuid)
+
+            if asset_uuid not in map_data["assets"]:
+                continue
+
+            map_data["assets"][asset_uuid] = asset.file.url
+
+        for asset_uuid, asset_url in map_data["assets"].items():
+            if asset_url is None:
+                raise ValueError(
+                    f"asset with UUID {asset_uuid} is not available",
+                )
+
+        # finish
+        return map_data
+
     class Meta:
         verbose_name = "Space"
         verbose_name_plural = "Spaces"

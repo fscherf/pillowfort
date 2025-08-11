@@ -3,7 +3,7 @@ from threading import RLock
 from json_rpc import JsonRpcServer
 
 from .notification_callbacks import test as test_notification_callbacks
-from .methods import subscriptions, methods, auth, test as test_methods
+from .methods import subscriptions, methods, auth, test as test_methods, maps
 
 _state = {
     'lock': RLock(),
@@ -32,6 +32,7 @@ def gen_json_rpc_server():
         ('subscribe', subscriptions.subscribe),
         ('unsubscribe', subscriptions.unsubscribe),
         ('get_subscriptions', subscriptions.get_subscriptions),
+        ('load_map', maps.load_map),
     ])
 
     return json_rpc_server
