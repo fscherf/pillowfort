@@ -14,6 +14,7 @@ export class JsonRpcClient {
   public websocket: WebSocket;
 
   private messageIdcounter: number = 1;
+  private onOpenCallbacks: Array<() => void>;
 
   private pendingRequests: Map<
     number,
@@ -32,6 +33,7 @@ export class JsonRpcClient {
     this.path = path || DEFAULT_PATH;
     this.pendingRequests = new Map();
     this.notificationCallbacks = new Map();
+    this.onOpenCallbacks = new Array();
   }
 
   public connect(
@@ -58,6 +60,12 @@ export class JsonRpcClient {
 
     this.websocket.addEventListener("open", () => {
       console.log("JSON RPC: connected");
+
+      while (this.onOpenCallbacks.length > 0) {
+        const callback = this.onOpenCallbacks.shift();
+
+        callback();
+      }
     });
 
     this.websocket.addEventListener("close", () => {
@@ -108,6 +116,16 @@ export class JsonRpcClient {
         callback(message.message);
       }
     }
+  }
+
+  public awaitConnection(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (this.websocket.readyState == this.websocket.OPEN) {
+        resolve();
+      } else {
+        this.onOpenCallbacks.push(resolve);
+      }
+    });
   }
 
   public addNotificationCallback(
