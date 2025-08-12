@@ -139,7 +139,7 @@ export class JsonRpcClient {
     this.notificationCallbacks.get(method).push(callback);
   }
 
-  public call(method: string, params?: object): Promise<unknown> {
+  public call(method: string, params?: any): Promise<unknown> {
     return new Promise((resolve, reject) => {
       const messageId: number = this.messageIdcounter;
       const message: string = encodeRequest(method, messageId, params);
